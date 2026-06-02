@@ -1,0 +1,31 @@
+package com.example.fitdas.api.service
+
+import com.example.fitdas.api.domain.User
+import com.example.fitdas.api.infrastructure.CustomOidcUser
+import com.example.fitdas.api.infrastructure.UserRepository
+import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest
+import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService
+import org.springframework.security.oauth2.core.OAuth2AuthenticationException
+import org.springframework.security.oauth2.core.oidc.user.OidcUser
+import org.springframework.stereotype.Service
+
+@Service
+class CustomOidcUserService(private val repository: UserRepository) : OidcUserService() {
+
+    @Throws(OAuth2AuthenticationException::class)
+    override fun loadUser(userRequest: OidcUserRequest): OidcUser {
+        val oauth2User = super.loadUser(userRequest) // デフォルト実装を利用してOAuth2Userを取得
+
+        // FIXME: 永続化は、この後発行されるInteractiveAuthenticationSuccessEventのサブスクライバーでするほうがBetterかも知れない
+        val name = oauth2User.attributes["name"] as String
+        val subId = oauth2User.attributes["sub"] as String
+        var user = repository.findByGoogleSubId(subId.toBigInteger())
+        if (user == null) {
+            user = User(name, subId.toBigInteger())
+            this.repository.save(user)
+        }
+        val userId = user.id!!
+        // 認証したユーザの情報を返す。このインスタンスがセッションに保存される。
+        return CustomOidcUser(userId, userRequest.clientRegistration.clientName, subId, oauth2User)
+    }
+}

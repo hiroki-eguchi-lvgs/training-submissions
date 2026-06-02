@@ -1,0 +1,13 @@
+services:
+  db:
+    image: postgres:18
+    environment:
+      POSTGRES_DB: fitdas_db
+      POSTGRES_USER: fitdas_user
+      POSTGRES_PASSWORD: ${POSTGRES_DB_PASSWORD}
+    volumes:
+      - db-data:/var/lib/postgresql/18/docker
+    ports:
+      - 5432:5432
+volumes:
+  db-data:
