@@ -36,7 +36,7 @@ type FormErrors = {
   slackChannelUrl?: string;
 };
 
-const GROUPS = `
+const GROUP = `
           query Group($id: ID!) {
               group(id: $id) {
                   id
@@ -102,7 +102,7 @@ function EditGroup() {
 
   const initialize = async (id: string) => {
     try {
-      const response = await graphqlClient.graphqlFetch(GROUPS, { id: id });
+      const response = await graphqlClient.graphqlFetch(GROUP, { id: id });
       console.log('response');
       console.log(response);
       const group = Object.values(response)[0] as Group;

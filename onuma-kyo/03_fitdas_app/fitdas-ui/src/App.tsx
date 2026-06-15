@@ -22,7 +22,6 @@ function App() {
             <Route path="/editGroup/:id?" element={<EditGroup />} />
             <Route path="/groupDetail/:id?" element={<GroupDetail />} />
             <Route path="/executor/:id?" element={<Executor />} />
-            <Route path="/groupDetail/:id?" element={<GroupDetail />} />
             <Route path="/stampExecutor/:id?" element={<StampExecutor />} />
           </Route>
         </Routes>

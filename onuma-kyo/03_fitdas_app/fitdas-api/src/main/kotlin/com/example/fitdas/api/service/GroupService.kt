@@ -49,14 +49,14 @@ class GroupServiceImpl(
         if (!groupLogic.validate(input)) {
             throw BusinessException("入力値が不正です")
         }
-        val savedGroupWapper = groupLogic.createGroup(stampIssuerId, input)
-        val savedGroup = savedGroupWapper.group
+        val savedGroupWrapper = groupLogic.createGroup(stampIssuerId, input)
+        val savedGroup = savedGroupWrapper.group
         val membership =
             savedGroup.findMembershipByUserId(stampIssuerId)
-        val event = savedGroupWapper.event
+        val event = savedGroupWrapper.event
         cardLogic.createCard(membership, event, savedGroup.getAssignedStamps())
         if (event.status === MigratingStatus.MIGRATING) {
-            eventPublisher.publishEvent(event.toMigratied())
+            eventPublisher.publishEvent(event.toMigrated())
         }
         return savedGroup
     }
@@ -71,14 +71,14 @@ class GroupServiceImpl(
 
     override fun addMember(id: String, memberId: Long): Group {
         val group = groupLogic.findById(id.toLong()) ?: throw BusinessException("グループが見つかりません")
-        val savedGroupWapper = groupLogic.addMember(group, memberId)
-        val savedGroup = savedGroupWapper.group
+        val savedGroupWrapper = groupLogic.addMember(group, memberId)
+        val savedGroup = savedGroupWrapper.group
         val membership =
             savedGroup.findMembershipByUserId(memberId)
-        val event = savedGroupWapper.event
+        val event = savedGroupWrapper.event
         cardLogic.createCard(membership, event, savedGroup.getAssignedStamps())
         if (event.status === MigratingStatus.MIGRATING) {
-            eventPublisher.publishEvent(event.toMigratied())
+            eventPublisher.publishEvent(event.toMigrated())
         }
         return savedGroup
     }

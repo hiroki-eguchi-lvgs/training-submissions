@@ -40,7 +40,7 @@ class GroupController(
             throw AuthenticationCredentialsNotFoundException("ログインされていません。")
         }
         val user: CustomOidcUser = SecurityContextHolder.getContext().authentication?.principal as CustomOidcUser
-        return groupService.findAllByUserId(user.userId).map({
+        return groupService.findAllByUserId(user.userId).map {
             Group(
                 id = it.id!!.toString(),
                 name = it.name,
@@ -49,7 +49,7 @@ class GroupController(
                 stampsToReward = it.stampsToReward,
 //                stampIssuerUserId = "",// TODO
             )
-        })
+        }
     }
 
     @DgsMutation

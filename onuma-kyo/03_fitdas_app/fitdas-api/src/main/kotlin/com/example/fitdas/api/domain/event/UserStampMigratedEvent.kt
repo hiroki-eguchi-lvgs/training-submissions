@@ -7,7 +7,7 @@ data class UserStampMigratedEvent(
     val status: MigratingStatus,
     val migratingStamps: Int
 ) {
-    fun toMigratied() = UserStampMigratedEvent(
+    fun toMigrated() = UserStampMigratedEvent(
         userId = userId,
         status = MigratingStatus.MIGRATED,
         migratingStamps = migratingStamps

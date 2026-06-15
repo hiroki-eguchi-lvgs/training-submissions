@@ -24,7 +24,6 @@ const GROUPS = `
                   name
                   scheduledStartAt
                   slackChannelUrl
-                  slackChannelUrl
                   stampsToReward
               }
           }

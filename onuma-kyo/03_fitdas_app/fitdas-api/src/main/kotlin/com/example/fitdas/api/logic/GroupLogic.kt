@@ -56,7 +56,7 @@ class GroupLogic(
         val stampIssuerRole = roleRepository.findByCode(RoleCode.ROLE_STAMP_ISSUER)
             ?: throw BusinessException("ロール:${RoleCode.ROLE_STAMP_ISSUER}のデータが登録されていません")
         val rewardManagerRole = roleRepository.findByCode(RoleCode.ROLE_REWARD_MANAGER)
-            ?: throw BusinessException("ロール:${RoleCode.ROLE_STAMP_ISSUER}のデータが登録されていません")
+            ?: throw BusinessException("ロール:${RoleCode.ROLE_REWARD_MANAGER}のデータが登録されていません")
         // FIXME: ↓スタンプ選択機能実装する際にstampのID一覧と対応するStampエンティティをREADするよう修正
         val assignedStamps =
             stampRepository.findAll().ifEmpty { throw BusinessException("スタンプが見つかりません。") }
@@ -81,10 +81,11 @@ class GroupLogic(
         group.stampsToReward = input.stampsToReward
         // stampを洗替え
         group.clearGroupStampAssignments()
-        // stampのID一覧と対応するStampエンティティをREAD
-        // 各StampエンティティとGroupの関連エンティティを作成
-        stampRepository.findAllById(input.stampIds.map { it.toLong() }).forEach {
-            GroupStampAssignment(group, it)
+        // FIXME: ↓スタンプ選択機能実装する際にstampのID一覧と対応するStampエンティティをREADするよう修正
+        val assignedStamps =
+            stampRepository.findAll().ifEmpty { throw BusinessException("スタンプが見つかりません。") }
+        assignedStamps.forEach {
+            group.addGroupStampAssignment(GroupStampAssignment(group, it))
         }
         return groupRepository.save(group)
 //        logger.info("Review added {}", review)

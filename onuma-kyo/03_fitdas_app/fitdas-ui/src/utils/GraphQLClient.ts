@@ -1,4 +1,4 @@
-export const graphqlFetch = async (query: String, ...input: Object[]) => {
+export const graphqlFetch = async (query: string, ...input: Object[]) => {
   // 渡された複数のオブジェクトを1つにマージする
   const mergedInput = Object.assign({}, ...input);
   console.log('mergedInput');
@@ -20,7 +20,7 @@ export const graphqlFetch = async (query: String, ...input: Object[]) => {
   console.log(resObject);
   // エラーハンドリング
   if (resObject.errors) {
-    const businessErrorMessages: String[] = [];
+    const businessErrorMessages: string[] = [];
     for (let error of resObject.errors) {
       console.error(`Error: ${error.message}`);
       console.log(error);
