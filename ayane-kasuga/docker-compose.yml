@@ -1,0 +1,51 @@
+version: "3.8"
+
+services:
+  # ① フロントエンド配信 ＆ 案内人（Nginx）
+  frontend:
+    image: nginx:alpine
+    ports:
+      - "80:80" # Macの80番ポートを解放
+    volumes:
+      # 今あるHTMLやCSSのファイルを、Nginxのコンテナ内に
+      - .:/usr/share/nginx/html
+      # nginx.confをNginxコンテナ内に読み込ませる
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - backend
+
+  #  ② バックエンドサーバー（Node.js / Fastify）
+  backend:
+    image: node:20-alpine
+    working_dir: /app
+    volumes:
+      - ./blog-backend:/app
+    ports:
+      - "3000:3000"
+    # コンテナが立ち上がったら自動でライブラリを入れ、サーバーを起動するコマンド
+    command: sh -c "npm install && node server.js"
+    env_file:
+      - ./blog-backend/.env #  .envファイルから環境変数を自動読み込み
+    environment:
+      - DB_HOST=db
+    depends_on:
+      - db
+
+  #  ③ データベースサーバー（MySQL）を追加
+  db:
+    image: mysql:8.0
+    container_name: ayane-blog-db
+    restart: always
+    ports:
+      - "3306:3306"
+    env_file:
+      - ./blog-backend/.env
+    environment:
+      MYSQL_DATABASE: ${DB_NAME} #.envからデータベース名を読み込む
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD} #.envからパスワードを読み込む
+    volumes:
+      - db_data:/var/lib/mysql
+
+# データの永続化設定
+volumes:
+  db_data:

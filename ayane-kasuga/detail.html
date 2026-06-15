@@ -19,13 +19,13 @@
     <header class="header">
         <div class="header-inner">
             <h1 class="header-logo">
-                <a href="daydaytravel">DAYDAYTRAVEL</a>
+                <a href="index.html">DAYDAYTRAVEL</a>
             </h1>
 
             <nav class="navbar">
                 <ul class="navbar-list">
-                    <li><a href="#">Login</a></li>
-                    <li><a href="#" class="btn-primary">Get started</a></li>
+                    <li><a href="login.html">Login</a></li>
+                    <li><a href="register.html" class="btn-primary">Get started</a></li>
                 </ul> 
             </nav>
         </div>
@@ -40,12 +40,12 @@
             <!--------記事プロフィール---------->
             <div class="author-profile">
                 <figure class="profile-img">
-                    <img src="img/karensmith.png" alt="Profile img">
+                    <img src="img/karensmith.png" alt="Profile img" id="detail-avatar">
                 </figure>
 
                 <div class="author-profile-detail">
-                    <span class="profile-name">Karen Smith</span>
-                    <time datetime="2022-02-19">19 Fev 2022</time>
+                    <span class="profile-name" id="detail-author">Karen Smith</span>
+                    <time id="detail-date" datetime="2022-02-19">19 Fev 2022</time>
                 </div>
 
                 <figure class="author-profile-sns">
@@ -60,6 +60,10 @@
             <div class="article-title-wrapper">
                 <span class="main-category">Culinary</span>
                 <h2 class="article-title">記事タイトル記事タイトル記事タイトル</h2>
+
+                <div id="edit-button-container" style="display: none; margin-top: 15px;">
+                    <a href="edit.html" id="btn-edit-goto" class="btn-edit">✏️この記事を編集する</a>
+                </div>
             </div>
 
             <!--------記事詳細------->
@@ -326,5 +330,6 @@
             <small>&copy; 2026 PT. Travel Everyday Indonesia.</small>
         </div>
     </footer>
+    <script src="js/detail.js"></script>
 </body>
 </html>

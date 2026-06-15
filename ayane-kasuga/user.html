@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>プロフィール画面</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght=300;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/destyle.css@1.0.15/destyle.css"/>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/user.css">
+    <link rel="icon" href="data:,">
+</head>
+
+<body>
+    <header class="header">
+        <div class="header-inner">
+            <h1 class="header-logo">
+                <a href="index.html">DAYDAYTRAVEL</a>
+            </h1>
+            <nav class="navbar">
+                <ul class="navbar-list" id="user-status">
+                    <li><a href="login.html">Login</a></li>
+                    <li><a href="register.html" class="btn-primary">Get started</a></li>
+                </ul> 
+            </nav>
+        </div>
+    </header>
+
+    <main class="content-wrapper user-main-content">
+        
+        <section class="profile-card">
+            <div class="profile-flex">
+                <div class="profile-avatar-area">
+                    <img src="" alt="ユーザーアイコン" class="profile-avatar" id="profile-avatar">
+                    <input type="file" id="avatar-input" accept="image/*" style="display: none;" onchange="uploadAvatar()">
+                    <button class="edit-btn edit-avatar-btn" onclick="document.getElementById('avatar-input').click()">編集</button>
+                </div>
+                
+                <table class="profile-info-table">
+                    <tr>
+                        <th>ユーザーID</th>
+                        <td>
+                            <span id="profile-user-id">読み込み中...</span>
+                            <button class="edit-btn" onclick="editUserId()">編集</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>ユーザー名</th>
+                        <td>
+                            <span id="profile-user-name">読み込み中...</span>
+                            <button class="edit-btn" onclick="editUserName()">編集</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>メールアドレス</th>
+                        <td>
+                            <span id="profile-email">読み込み中...</span>
+                            <button class="edit-btn" onclick="editEmail()">編集</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </section>
+
+        <section class="my-posts-section">
+            <h2 class="my-posts-title">過去の投稿一覧</h2>
+            <div class="my-posts-container-grid" id="my-posts-container">
+                <p class="loading-msg">投稿データを読み込んでいます...</p>
+            </div>
+        </section>
+
+
+    </main>
+
+
+    <!-----フッター------>
+    <footer>
+        <div class="footer-main">
+        
+            <div class="footer-pt">
+                <h3 class="footer-title">PT.Travel Everyday Indonesia</h3>
+
+                <address class="pt-address">
+                    <ul>
+                        <li>Grand Floor Zaidin L-Walk,<br>
+                        Jl. Maju Jaya No. 2,<br>
+                        Daerah Istimewa Yogyakarta,<br>
+                        Indonesia 55281
+                        </li>
+                    </ul>
+                </address>
+
+                <ul class="pt-text">
+                    <li><a href="">About</a></li>
+                    <li><a href="">Privacy policy</a></li>
+                    <li><a href="">Terms & Conditions</a></li>
+                    <li><a href="">Contact</a></li>
+                </ul>
+            </div>
+        
+            <div class="footer-info">
+                <h3 class="footer-title">Informations</h3>
+                <ul class="info-text">
+                    <li><a href="">How to register as a user</a></li>
+                    <li><a href="">Guide to creating travel review</a></li>
+                    <li><a href="">Tutorial for making culinary<br>reviews</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-follow">
+                <h3 class="footer-title">Follow us</h3>
+                <ul class="follow-text">
+                    <li><a href="https://www.instagram.com">Instagram</a></li>
+                    <li><a href="https://www.facebook.com/?locale=ja_JP">Facebook</a></li>
+                    <li><a href="https://x.com/?lang=ja">Twitter</a></li>
+                    <li><a href="https://www.youtube.com/?app=desktop&hl=ja">Youtube</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-app">
+                <h3 class="footer-title">Download app</h3>
+                <ul class="app-img">
+                    <li><a href="https://www.apple.com/jp/app-store/">
+                        <img src="./img/AppStore.jpg" alt="App store">
+                    </a></li>
+                    <li><a href="https://play.google.com/store/games?hl=ja">
+                        <img src="./img/PlayStore.jpg" alt="Play store">
+                    </a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-copy">
+            <small>&copy; 2026 PT. Travel Everyday Indonesia.</small>
+        </div>
+        
+    </footer>
+    <script src="js/user.js"></script>
+</body>
+</html>

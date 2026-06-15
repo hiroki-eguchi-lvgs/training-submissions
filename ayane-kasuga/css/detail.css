@@ -365,6 +365,28 @@ body {
     color: var(--primary-color);
     margin-bottom: 15px;
 }
+/*  詳細ページに置く「編集ボタン」のデザイン*/
+.btn-edit {
+    display: inline-block;
+    background-color: #fff;
+    color: #FF553C;              
+    border: 2px solid #FF553C;    
+    padding: 8px 18px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(255, 85, 60, 0.1);
+}
+
+/* マウスを乗せたときにオレンジ色が反転するアニメーション */
+.btn-edit:hover {
+    background-color: #FF553C;
+    color: #fff;
+    box-shadow: 0 4px 8px rgba(255, 85, 60, 0.2);
+    transform: translateY(-1px); 
+}
+
 
 /* レスポンシブ対応の時 */
 

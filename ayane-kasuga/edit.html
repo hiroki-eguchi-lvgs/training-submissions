@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ブログ記事編集画面</title>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/edit.css">
+
+</head>
+<body>
+    <header class="header">
+        <div class="header-inner">
+            <h1 class="header-logo">
+                <a href="index.html">DAYDAYTRAVEL</a>
+            </h1>
+
+            <nav class="navbar">
+                <ul class="navbar-list">
+                    <li><a href="login.html">Login</a></li>
+                    <li><a href="register.html" class="btn-primary">Get started</a></li>
+                </ul> 
+            </nav>
+        </div>
+    </header>
+    
+    <h2>✒️記事の編集</h2>
+
+    <form id="edit-form">
+        <div class="form-group">
+            <label for="article-title">記事タイトル</label>
+            <input type="text" id="article-title" required placeholder="タイトルの入力...">
+        </div>
+
+        <div class="form-group">
+            <label for="article-content">本文</label>
+            <textarea type="text" id="article-content" required placeholder="本文の入力..."></textarea>
+        </div>
+
+        <div class="btn-box">
+            <a href="index.html" class="btn-cancel">キャンセル</a>
+            <button type="submit" class="btn-save">変更を保存する</button>
+        </div>
+        
+    </form>
+    <footer>
+        <div class="footer-main">
+        
+            <div class="footer-pt">
+                <h3 class="footer-title">PT.Travel Everyday Indonesia</h3>
+
+                <address class="pt-address">
+                    <ul>
+                        <li>Grand Floor Zaidin L-Walk,<br>
+                        Jl. Maju Jaya No. 2,<br>
+                        Daerah Istimewa Yogyakarta,<br>
+                        Indonesia 55281
+                        </li>
+                    </ul>
+                </address>
+
+                <ul class="pt-text">
+                    <li><a href="">About</a></li>
+                    <li><a href="">Privacy policy</a></li>
+                    <li><a href="">Terms & Conditions</a></li>
+                    <li><a href="">Contact</a></li>
+                </ul>
+            </div>
+        
+            <div class="footer-info">
+                <h3 class="footer-title">Informations</h3>
+                <ul class="info-text">
+                    <li><a href="">How to register as a user</a></li>
+                    <li><a href="">Guide to creating travel review</a></li>
+                    <li><a href="">Tutorial for making culinary<br>reviews</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-follow">
+                <h3 class="footer-title">Follow us</h3>
+                <ul class="follow-text">
+                    <li><a href="https://www.instagram.com">Instagram</a></li>
+                    <li><a href="https://www.facebook.com/?locale=ja_JP">Facebook</a></li>
+                    <li><a href="https://x.com/?lang=ja">Twitter</a></li>
+                    <li><a href="https://www.youtube.com/?app=desktop&hl=ja">Youtube</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-app">
+                <h3 class="footer-title">Download app</h3>
+                <ul class="app-img">
+                    <li><a href="https://www.apple.com/jp/app-store/">
+                        <img src="./img/AppStore.jpg" alt="App store">
+                    </a></li>
+                    <li><a href="https://play.google.com/store/games?hl=ja">
+                        <img src="./img/PlayStore.jpg" alt="Play store">
+                    </a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-main"></div>
+        
+        <div class="footer-copy">
+            <small>&copy; 2026 PT. Travel Everyday Indonesia.</small>
+        </div>
+    </footer>
+
+<script src="js/edit.js"></script>
+</body>
+</html>
