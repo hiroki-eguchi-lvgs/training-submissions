@@ -1,6 +1,7 @@
 package com.example.fitdas.api.domain
 
 import com.example.fitdas.api.codegen.types.Membership
+import com.example.fitdas.api.exception.BusinessException
 import jakarta.persistence.*
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedDate
@@ -72,6 +73,7 @@ class Membership(
     }
 
     fun getCurrentCard(): Card {
+        if (cards.isEmpty()) throw BusinessException("カードが存在しません")
         return cards.sortedByDescending { it.generation }.first()
     }
 

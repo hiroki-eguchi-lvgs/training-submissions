@@ -10,11 +10,17 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser
 import org.springframework.stereotype.Service
 
 @Service
-class CustomOidcUserService(private val repository: UserRepository) : OidcUserService() {
+open class CustomOidcUserService(private val repository: UserRepository) : OidcUserService() {
+
+    /**
+     * テストでスーパークラスのネットワーク呼び出しを行わずに偽の OidcUser を提供できるよう
+     * fetch 処理を切り出しています。デフォルト実装はスーパークラスの loadUser を呼び出します。
+     */
+    protected open fun fetchOidcUser(userRequest: OidcUserRequest): OidcUser = super.loadUser(userRequest)
 
     @Throws(OAuth2AuthenticationException::class)
     override fun loadUser(userRequest: OidcUserRequest): OidcUser {
-        val oauth2User = super.loadUser(userRequest) // デフォルト実装を利用してOAuth2Userを取得
+        val oauth2User = fetchOidcUser(userRequest) // デフォルト実装を利用してOAuth2Userを取得
 
         // FIXME: 永続化は、この後発行されるInteractiveAuthenticationSuccessEventのサブスクライバーでするほうがBetterかも知れない
         val name = oauth2User.attributes["name"] as String

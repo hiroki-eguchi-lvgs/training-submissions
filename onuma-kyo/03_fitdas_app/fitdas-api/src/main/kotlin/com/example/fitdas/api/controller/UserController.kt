@@ -21,7 +21,6 @@ class UserController(private val userService: UserService) {
         val user: CustomOidcUser = SecurityContextHolder.getContext().authentication?.principal as CustomOidcUser
         return userService.updateUser(user.userId, migratingStamps).let {
             UserUpdatePayload(
-
                 user = User(
                     id = it.id!!.toString(),
                     name = it.name,

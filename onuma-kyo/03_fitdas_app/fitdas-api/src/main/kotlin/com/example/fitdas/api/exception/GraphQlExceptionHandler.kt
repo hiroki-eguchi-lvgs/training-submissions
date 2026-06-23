@@ -44,7 +44,5 @@ class GraphQlExceptionHandler {
                     .build()
             }
         }
-
-
     }
 }

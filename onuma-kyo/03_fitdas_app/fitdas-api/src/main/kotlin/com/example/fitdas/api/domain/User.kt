@@ -29,7 +29,8 @@ class User(
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    val id: Long? = null // NOTE: val にする: IDは一度採番されたら後から変更すべきではないため（JPAは val であってもリフレクションを使ってDBからの値を代入可能）
+    var id: Long? = null
+        internal set // 同一モジュール内（テスト含む）からのみ変更可能にする
 
     @CreatedDate
     @Column(nullable = false, updatable = false)

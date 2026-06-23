@@ -5,6 +5,7 @@ plugins {
     id("io.spring.dependency-management") version "1.1.7"
     id("com.netflix.dgs.codegen") version "8.3.0"
     kotlin("plugin.jpa") version "2.2.21"
+    jacoco
 }
 
 group = "com.example"
@@ -38,6 +39,7 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
     testImplementation("com.netflix.graphql.dgs:graphql-dgs-spring-graphql-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:4.1.0")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
@@ -70,4 +72,8 @@ allOpen {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+tasks.jacocoTestReport {
+    dependsOn(tasks.test) // tests are required to run before generating the report
 }

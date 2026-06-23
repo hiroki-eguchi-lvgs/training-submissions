@@ -49,7 +49,7 @@ class Role(
         roleAssignments.remove(roleAssignment)
     }
 
-    fun hasRoleCode(code: RoleCode): Boolean {
+    fun isCode(code: RoleCode): Boolean {
         return code == this.code
     }
 }

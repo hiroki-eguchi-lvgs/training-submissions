@@ -13,8 +13,6 @@ import org.springframework.security.core.context.SecurityContextHolder
 import java.net.URI
 import java.util.concurrent.CompletableFuture
 
-
-// TODO: 戻り値のGroupを改善（現状適当にダミー値詰めてるところがある）
 @DgsComponent
 class GroupController(
     private val groupService: GroupService,
@@ -47,7 +45,7 @@ class GroupController(
                 scheduledStartAt = it.scheduledStartAt,
                 slackChannelUrl = URI.create(it.slackChannelUrl).toURL(),
                 stampsToReward = it.stampsToReward,
-//                stampIssuerUserId = "",// TODO
+//                stampIssuerUserId = "",// FIXME: UserIdベースのUI制御を実装する場合、ここを修正する
             )
         }
     }

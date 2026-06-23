@@ -32,7 +32,6 @@ class Card(
     @Version
     var version: Int? = null
 
-    // TODO: 後で消す
     @OneToMany(mappedBy = "card", cascade = [CascadeType.ALL], orphanRemoval = true)
     val stampHistories: MutableList<StampHistory> = ArrayList()
 
@@ -42,8 +41,8 @@ class Card(
 
     fun countStampHistories(): Int = stampHistories.size
 
-    fun createNewCard(membership: Membership): Card {
-        val newCard = Card(membership, generation + 1)
+    fun createNewCard(): Card {
+        val newCard = Card(this.membership, generation + 1)
         membership.addCard(newCard)
         return newCard
     }

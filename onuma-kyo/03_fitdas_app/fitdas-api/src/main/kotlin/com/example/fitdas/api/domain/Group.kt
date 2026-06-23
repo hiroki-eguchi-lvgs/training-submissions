@@ -48,11 +48,13 @@ class Group(
     }
 
     fun findMembershipById(id: Long): Membership {
-        return memberships.first { it.id == id }
+        return memberships.firstOrNull() { it.id == id }
+            ?: throw BusinessException("指定されたIDのメンバーが存在しません")
     }
 
     fun findMembershipByUserId(userId: Long): Membership {
-        return memberships.first { it.hasUser(userId) }
+        return memberships.firstOrNull() { it.hasUser(userId) }
+            ?: throw BusinessException("指定されたユーザーIDのメンバーが存在しません")
     }
 
     fun findRoleAssignment(code: RoleCode): RoleAssignment {

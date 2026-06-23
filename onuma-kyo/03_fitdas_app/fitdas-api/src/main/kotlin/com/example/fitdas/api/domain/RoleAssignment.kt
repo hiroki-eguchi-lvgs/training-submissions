@@ -34,7 +34,7 @@ class RoleAssignment(
     var version: Int? = null
 
     fun hasRole(code: RoleCode): Boolean {
-        return role.hasRoleCode(code)
+        return role.isCode(code)
     }
 
     fun getRoleCode() = role.code

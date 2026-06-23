@@ -13,22 +13,21 @@ import org.springframework.stereotype.Component
 class CardLogic(
     private val cardRepository: CardRepository,
 ) {
-    fun findAll(): List<Card> = cardRepository.findAll()
     fun createCard(
         membership: Membership,
         event: UserStampMigratedEvent,
         assignedStamps: List<com.example.fitdas.api.domain.Stamp>
     ): Card {
-        val card = if (event.status === MigratingStatus.MIGRATING) Card.createNewCardWithMigration(
-            membership,
-            event.migratingStamps,
-            assignedStamps
-        ) else Card(membership)
+        val card =
+            if (event.status === MigratingStatus.MIGRATING)
+                Card.createNewCardWithMigration(
+                    membership,
+                    event.migratingStamps,
+                    assignedStamps
+                )
+            else
+                Card(membership)
         return cardRepository.save(card)
-    }
-
-    fun findMaxGenerationCardsByMemberships(membershipIds: Set<Long>): Set<Card> {
-        return cardRepository.findMaxGenerationCardsByMemberships(membershipIds)
     }
 
     fun stamp(
@@ -40,7 +39,7 @@ class CardLogic(
         val currentCard = membership.getCurrentCard()
         currentCard.addStampHistory(StampHistory(currentCard, assignedStamps.random()))
         if (currentCard.countStampHistories() == stampsToReward) {
-            val newCard = currentCard.createNewCard(membership)
+            val newCard = currentCard.createNewCard()
             cardRepository.saveAll(mutableSetOf<Card>(currentCard, newCard))
             return
         }
