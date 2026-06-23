@@ -1,6 +1,6 @@
 package com.example.fitdas.api.controller
 
-import com.example.fitdas.api.domain.User
+import com.example.fitdas.api.domain.entity.User
 import com.example.fitdas.api.infrastructure.CustomOidcUser
 import com.example.fitdas.api.scalars.SharedScalarsRegistration
 import com.example.fitdas.api.service.UserService

@@ -1,6 +1,6 @@
 package com.example.fitdas.api.infrastructure
 
-import com.example.fitdas.api.domain.User
+import com.example.fitdas.api.domain.entity.User
 import org.springframework.data.jpa.repository.JpaRepository
 import java.math.BigInteger
 

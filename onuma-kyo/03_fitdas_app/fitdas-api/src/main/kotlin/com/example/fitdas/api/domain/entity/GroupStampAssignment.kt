@@ -1,4 +1,4 @@
-package com.example.fitdas.api.domain
+package com.example.fitdas.api.domain.entity
 
 import jakarta.persistence.*
 import org.springframework.data.annotation.CreatedDate

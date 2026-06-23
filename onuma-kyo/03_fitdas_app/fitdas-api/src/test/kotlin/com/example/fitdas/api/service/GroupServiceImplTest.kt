@@ -1,11 +1,11 @@
 package com.example.fitdas.api.service
 
 import com.example.fitdas.api.codegen.types.GroupInput
-import com.example.fitdas.api.domain.*
+import com.example.fitdas.api.domain.entity.*
 import com.example.fitdas.api.domain.event.UserStampMigratedEvent
+import com.example.fitdas.api.domain.logic.CardLogic
+import com.example.fitdas.api.domain.logic.GroupLogic
 import com.example.fitdas.api.exception.BusinessException
-import com.example.fitdas.api.logic.CardLogic
-import com.example.fitdas.api.logic.GroupLogic
 import org.junit.jupiter.api.*
 import org.mockito.kotlin.*
 import org.springframework.context.ApplicationEventPublisher
@@ -13,6 +13,10 @@ import java.net.URI
 import java.time.LocalTime
 
 class GroupServiceImplTest {
+
+    companion object {
+        private val FIXED_INSTANT: LocalTime = LocalTime.of(12, 0)
+    }
 
     private lateinit var sut: GroupService
     private lateinit var groupLogic: GroupLogic
@@ -36,7 +40,7 @@ class GroupServiceImplTest {
         // GIVEN LogicがGroupを返却するようにモックを設定
         val targetId = 1L
         val targetName = "testGroup"
-        val targetScheduledStartAt = LocalTime.now()
+        val targetScheduledStartAt = FIXED_INSTANT
         val expectedGroup = Group(
             name = targetName,
             scheduledStartAt = targetScheduledStartAt,
@@ -81,7 +85,7 @@ class GroupServiceImplTest {
         // GIVEN LogicがGroupを返却するようにモックを設定
         val targetId = 1L
         val targetName = "testGroup"
-        val targetScheduledStartAt = LocalTime.now()
+        val targetScheduledStartAt = FIXED_INSTANT
         val expectedGroup = Group(
             name = targetName,
             scheduledStartAt = targetScheduledStartAt,
@@ -127,7 +131,7 @@ class GroupServiceImplTest {
         // GIVEN
         val targetStampIssuerId = 1L
         val targetName = "testGroup"
-        val targetScheduledStartAt = LocalTime.now()
+        val targetScheduledStartAt = FIXED_INSTANT
         val targetSlackChannelUrl = "http://slack.com"
         val targetStampsToReward = 10
 
@@ -189,7 +193,7 @@ class GroupServiceImplTest {
         // GIVEN
         val targetStampIssuerId = 1L
         val targetName = "testGroup"
-        val targetScheduledStartAt = LocalTime.now()
+        val targetScheduledStartAt = FIXED_INSTANT
         val targetSlackChannelUrl = "http://slack.com"
         val targetStampsToReward = 10
 
@@ -218,7 +222,7 @@ class GroupServiceImplTest {
         // GIVEN
         val targetStampIssuerId = 1L
         val targetName = "testGroup"
-        val targetScheduledStartAt = LocalTime.now()
+        val targetScheduledStartAt = FIXED_INSTANT
         val targetSlackChannelUrl = "http://slack.com"
         val targetStampsToReward = 10
 
@@ -283,7 +287,7 @@ class GroupServiceImplTest {
         // GIVEN
         val targetGroupId = 1L
         val targetName = "testGroup"
-        val targetScheduledStartAt = LocalTime.now()
+        val targetScheduledStartAt = FIXED_INSTANT
         val targetSlackChannelUrl = "http://slack.com"
         val targetStampsToReward = 10
 
@@ -319,7 +323,7 @@ class GroupServiceImplTest {
         // GIVEN
         val targetGroupId = 1L
         val targetName = "testGroup"
-        val targetScheduledStartAt = LocalTime.now()
+        val targetScheduledStartAt = FIXED_INSTANT
         val targetSlackChannelUrl = "http://slack.com"
         val targetStampsToReward = 10
 
@@ -355,7 +359,7 @@ class GroupServiceImplTest {
         // GIVEN
         val targetGroupId = 1L
         val targetName = "testGroup"
-        val targetScheduledStartAt = LocalTime.now()
+        val targetScheduledStartAt = FIXED_INSTANT
         val targetSlackChannelUrl = "http://slack.com"
         val targetStampsToReward = 10
 
@@ -397,7 +401,7 @@ class GroupServiceImplTest {
         val memberId = 1L
         val targetGroupId = 2L
         val targetName = "testGroup"
-        val targetScheduledStartAt = LocalTime.now()
+        val targetScheduledStartAt = FIXED_INSTANT
         val targetSlackChannelUrl = "http://slack.com"
         val targetStampsToReward = 10
 
@@ -473,7 +477,7 @@ class GroupServiceImplTest {
         val memberId = 1L
         val targetGroupId = 2L
         val targetName = "testGroup"
-        val targetScheduledStartAt = LocalTime.now()
+        val targetScheduledStartAt = FIXED_INSTANT
         val targetSlackChannelUrl = "http://slack.com"
         val targetStampsToReward = 10
 
@@ -532,7 +536,7 @@ class GroupServiceImplTest {
         val successorId = 1L
         val targetGroupId = 2L
         val targetName = "testGroup"
-        val targetScheduledStartAt = LocalTime.now()
+        val targetScheduledStartAt = FIXED_INSTANT
         val targetSlackChannelUrl = "http://slack.com"
         val targetStampsToReward = 10
 
@@ -585,7 +589,7 @@ class GroupServiceImplTest {
         val memberId = 1L
         val targetGroupId = 2L
         val targetName = "testGroup"
-        val targetScheduledStartAt = LocalTime.now()
+        val targetScheduledStartAt = FIXED_INSTANT
         val targetSlackChannelUrl = "http://slack.com"
         val targetStampsToReward = 10
 

@@ -3,7 +3,7 @@ import { type Me } from './generated/graphql';
 import * as graphqlClient from './utils/GraphQLClient';
 
 export type ContextType = {
-  userId: string;
+  userId?: string;
   loading: Boolean;
   isAuthenticated: boolean;
   isCompletedRegistration: boolean;
@@ -43,7 +43,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       setLoading(false);
     } catch (error) {
       console.error(error);
-      alert('サーバーとの通信に失敗しました');
+      alert('ログインしてください');
       setLoading(false);
     }
   };
@@ -51,7 +51,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   return (
     <AuthContext.Provider
       value={{
-        userId: user?.userId!,
+        userId: user?.userId,
         loading,
         isAuthenticated: !!user,
         isCompletedRegistration: user?.migratingStatus !== 'PENDING',

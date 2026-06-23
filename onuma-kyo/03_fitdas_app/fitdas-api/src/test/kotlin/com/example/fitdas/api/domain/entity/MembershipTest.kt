@@ -1,4 +1,4 @@
-package com.example.fitdas.api.domain
+package com.example.fitdas.api.domain.entity
 
 import com.example.fitdas.api.exception.BusinessException
 import org.junit.jupiter.api.Assertions

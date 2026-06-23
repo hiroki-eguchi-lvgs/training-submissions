@@ -1,7 +1,8 @@
-package com.example.fitdas.api.domain
+package com.example.fitdas.api.domain.entity
 
 import com.example.fitdas.api.codegen.types.User
 import com.example.fitdas.api.domain.event.UserStampMigratedEvent
+import com.example.fitdas.api.exception.BusinessException
 import jakarta.persistence.*
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedDate
@@ -61,5 +62,9 @@ class User(
         )
     }
 
-    fun toStampMigratedEvent() = UserStampMigratedEvent(this.id!!, this.migratingStatus, this.migratingStamps!!)
+    fun toStampMigratedEvent(): UserStampMigratedEvent {
+        val migratingStamps: Int =
+            this.migratingStamps ?: throw BusinessException("ユーザー登録処理途中のため続行できません。")
+        return UserStampMigratedEvent(this.id!!, this.migratingStatus, migratingStamps)
+    }
 }

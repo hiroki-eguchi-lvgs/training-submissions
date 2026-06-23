@@ -1,9 +1,9 @@
 package com.example.fitdas.api.service
 
-import com.example.fitdas.api.domain.User
+import com.example.fitdas.api.domain.entity.User
 import com.example.fitdas.api.domain.event.UserStampMigratedEvent
+import com.example.fitdas.api.domain.logic.UserLogic
 import com.example.fitdas.api.exception.BusinessException
-import com.example.fitdas.api.logic.UserLogic
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 

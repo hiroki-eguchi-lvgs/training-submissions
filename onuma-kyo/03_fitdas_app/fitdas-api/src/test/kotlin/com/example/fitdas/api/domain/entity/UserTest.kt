@@ -1,15 +1,17 @@
-package com.example.fitdas.api.domain
+package com.example.fitdas.api.domain.entity
 
-import com.example.fitdas.api.codegen.types.User
-import com.example.fitdas.api.domain.event.UserStampMigratedEvent
+import com.example.fitdas.api.exception.BusinessException
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import java.time.LocalDateTime
-import java.time.ZoneOffset
+import java.time.Instant
 
 class UserTest {
+
+    companion object {
+        private val FIXED_INSTANT: Instant = Instant.parse("2026-06-23T10:00:00Z")
+    }
 
     // ========================================
     // 観点: GraphQLの型クラスへの変換 - toGraphQLUser()
@@ -27,8 +29,8 @@ class UserTest {
             migratingStamps = 10
         ).apply {
             this.id = targetId
-            this.createdAt = LocalDateTime.now().toInstant(ZoneOffset.UTC)
-            this.updatedAt = LocalDateTime.now().toInstant(ZoneOffset.UTC)
+            this.createdAt = FIXED_INSTANT
+            this.updatedAt = FIXED_INSTANT
             this.version = 1
         }
 
@@ -37,7 +39,6 @@ class UserTest {
 
         // THEN
         Assertions.assertNotNull(actual)
-        Assertions.assertTrue(actual is User)
         Assertions.assertEquals(targetId.toString(), actual.id)
         Assertions.assertEquals(targetName, actual.name)
     }
@@ -59,8 +60,8 @@ class UserTest {
             migratingStamps = targetMigratingStamps
         ).apply {
             this.id = targetId
-            this.createdAt = LocalDateTime.now().toInstant(ZoneOffset.UTC)
-            this.updatedAt = LocalDateTime.now().toInstant(ZoneOffset.UTC)
+            this.createdAt = FIXED_INSTANT
+            this.updatedAt = FIXED_INSTANT
             this.version = 1
         }
 
@@ -69,7 +70,6 @@ class UserTest {
 
         // THEN
         Assertions.assertNotNull(actual)
-        Assertions.assertTrue(actual is UserStampMigratedEvent)
         Assertions.assertEquals(targetId, actual.userId)
         Assertions.assertEquals(targetMigratingStamps, actual.migratingStamps)
         Assertions.assertEquals(targetStatus, actual.status)
@@ -87,8 +87,8 @@ class UserTest {
             migratingStatus = targetStatus,
             migratingStamps = targetMigratingStamps
         ).apply {
-            this.createdAt = LocalDateTime.now().toInstant(ZoneOffset.UTC)
-            this.updatedAt = LocalDateTime.now().toInstant(ZoneOffset.UTC)
+            this.createdAt = FIXED_INSTANT
+            this.updatedAt = FIXED_INSTANT
             this.version = 1
         }
 
@@ -111,15 +111,16 @@ class UserTest {
             migratingStatus = targetStatus,
         ).apply {
             this.id = targetId
-            this.createdAt = LocalDateTime.now().toInstant(ZoneOffset.UTC)
-            this.updatedAt = LocalDateTime.now().toInstant(ZoneOffset.UTC)
+            this.createdAt = FIXED_INSTANT
+            this.updatedAt = FIXED_INSTANT
             this.version = 1
         }
 
         // WHEN&THEN BusinessExceptionをスローする
-        val exception = assertThrows<NullPointerException> {
+        val exception = assertThrows<BusinessException> {
             user.toStampMigratedEvent()
         }
         Assertions.assertNotNull(exception)
+        Assertions.assertEquals("ユーザー登録処理途中のため続行できません。", exception.message)
     }
 }

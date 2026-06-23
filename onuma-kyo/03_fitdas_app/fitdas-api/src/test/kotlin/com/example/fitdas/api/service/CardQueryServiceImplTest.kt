@@ -1,7 +1,10 @@
 package com.example.fitdas.api.service
 
 import com.example.fitdas.api.codegen.types.Card
-import com.example.fitdas.api.domain.*
+import com.example.fitdas.api.domain.entity.Group
+import com.example.fitdas.api.domain.entity.Membership
+import com.example.fitdas.api.domain.entity.MigratingStatus
+import com.example.fitdas.api.domain.entity.User
 import com.example.fitdas.api.infrastructure.CardRepository
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
@@ -74,22 +77,23 @@ class CardQueryServiceImplTest {
                 stampsToReward = 10,
             )
         ).apply { this.id = thirdTargetId }
-        firstMembership.addCard(Card(firstMembership).apply { id = 0L })
+        firstMembership.addCard(com.example.fitdas.api.domain.entity.Card(firstMembership).apply { id = 0L })
         val currentCardOfFirstMembershipId = 1L
         val currentCardOfFirstMembership =
-            Card(firstMembership, 2).apply { id = currentCardOfFirstMembershipId }
+            com.example.fitdas.api.domain.entity.Card(firstMembership, 2).apply { id = currentCardOfFirstMembershipId }
         firstMembership.addCard(currentCardOfFirstMembership)
 
-        secondMembership.addCard(Card(secondMembership, 1).apply { id = 2L })
-        secondMembership.addCard(Card(secondMembership, 2).apply { id = 3L })
+        secondMembership.addCard(com.example.fitdas.api.domain.entity.Card(secondMembership, 1).apply { id = 2L })
+        secondMembership.addCard(com.example.fitdas.api.domain.entity.Card(secondMembership, 2).apply { id = 3L })
         val currentCardOfSecondMembershipId = 4L
         val currentCardOfSecondMembership =
-            Card(secondMembership, 3).apply { id = currentCardOfSecondMembershipId }
+            com.example.fitdas.api.domain.entity.Card(secondMembership, 3)
+                .apply { id = currentCardOfSecondMembershipId }
         secondMembership.addCard(currentCardOfSecondMembership)
 
         val currentCardOfThirdMembershipId = 5L
         val currentCardOfThirdMembership =
-            Card(thirdMembership, 1).apply { id = currentCardOfThirdMembershipId }
+            com.example.fitdas.api.domain.entity.Card(thirdMembership, 1).apply { id = currentCardOfThirdMembershipId }
         thirdMembership.addCard(currentCardOfThirdMembership)
 
         whenever(this.repository.findMaxGenerationCardsByMemberships(targetIds))
@@ -137,7 +141,7 @@ class CardQueryServiceImplTest {
         val thirdTargetId = 3L
         val targetIds = setOf(firstTargetId, secondTargetId, thirdTargetId)
         whenever(this.repository.findMaxGenerationCardsByMemberships(targetIds))
-            .thenReturn(setOf<com.example.fitdas.api.domain.Card>())
+            .thenReturn(setOf<com.example.fitdas.api.domain.entity.Card>())
 
         // WHEN Serviceクラスを呼び出す
         val result = this.sut.findMaxGenerationCardsByMemberships(targetIds)

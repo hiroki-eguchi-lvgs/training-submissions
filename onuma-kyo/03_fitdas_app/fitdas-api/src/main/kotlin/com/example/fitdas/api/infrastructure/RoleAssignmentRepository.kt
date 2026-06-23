@@ -1,6 +1,6 @@
 package com.example.fitdas.api.infrastructure
 
-import com.example.fitdas.api.domain.RoleAssignment
+import com.example.fitdas.api.domain.entity.RoleAssignment
 import org.springframework.data.jpa.repository.EntityGraph
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query

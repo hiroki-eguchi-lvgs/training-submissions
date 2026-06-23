@@ -1,10 +1,10 @@
 package com.example.fitdas.api.service
 
-import com.example.fitdas.api.domain.MigratingStatus
-import com.example.fitdas.api.domain.User
+import com.example.fitdas.api.domain.entity.MigratingStatus
+import com.example.fitdas.api.domain.entity.User
 import com.example.fitdas.api.domain.event.UserStampMigratedEvent
+import com.example.fitdas.api.domain.logic.UserLogic
 import com.example.fitdas.api.exception.BusinessException
-import com.example.fitdas.api.logic.UserLogic
 import org.junit.jupiter.api.*
 import org.mockito.ArgumentCaptor
 import org.mockito.Mockito

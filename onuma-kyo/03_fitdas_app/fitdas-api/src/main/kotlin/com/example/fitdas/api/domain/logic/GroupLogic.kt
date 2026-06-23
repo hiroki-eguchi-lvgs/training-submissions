@@ -1,7 +1,7 @@
-package com.example.fitdas.api.logic
+package com.example.fitdas.api.domain.logic
 
 import com.example.fitdas.api.codegen.types.GroupInput
-import com.example.fitdas.api.domain.*
+import com.example.fitdas.api.domain.entity.*
 import com.example.fitdas.api.exception.BusinessException
 import com.example.fitdas.api.infrastructure.GroupRepository
 import com.example.fitdas.api.infrastructure.RoleRepository

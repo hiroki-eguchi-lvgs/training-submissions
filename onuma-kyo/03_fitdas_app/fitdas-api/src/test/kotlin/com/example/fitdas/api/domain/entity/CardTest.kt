@@ -1,4 +1,4 @@
-package com.example.fitdas.api.domain
+package com.example.fitdas.api.domain.entity
 
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.DisplayName

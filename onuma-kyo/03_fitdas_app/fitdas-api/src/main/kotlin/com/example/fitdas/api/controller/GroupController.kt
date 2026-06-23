@@ -1,7 +1,7 @@
 package com.example.fitdas.api.controller
 
 import com.example.fitdas.api.codegen.types.*
-import com.example.fitdas.api.domain.RoleCode
+import com.example.fitdas.api.domain.entity.RoleCode
 import com.example.fitdas.api.infrastructure.CustomOidcUser
 import com.example.fitdas.api.service.GroupService
 import com.example.fitdas.api.service.StampHistoryQueryService
@@ -183,7 +183,7 @@ class GroupController(
     @DgsData(parentType = "Membership", field = "roles")
     fun roles(dfe: DgsDataFetchingEnvironment): CompletableFuture<List<com.example.fitdas.api.codegen.types.RoleCode>> {
         val membership = dfe.getSource<Membership>()
-        val id = membership?.id ?: return CompletableFuture.completedFuture(null)
+        val id = membership?.id ?: return CompletableFuture.completedFuture(emptyList())
         val dataLoader: DataLoader<Long, List<com.example.fitdas.api.codegen.types.RoleCode>> =
             dfe.getDataLoader("roles") ?: throw IllegalStateException("DataLoader 'roles' not found")
 
@@ -191,23 +191,23 @@ class GroupController(
     }
 
     @DgsData(parentType = "Membership", field = "user")
-    fun user(dfe: DgsDataFetchingEnvironment): CompletableFuture<User> {
+    fun user(dfe: DgsDataFetchingEnvironment): CompletableFuture<User?> {
         val membership = dfe.getSource<Membership>()
         val id = membership?.userId ?: return CompletableFuture.completedFuture(null)
         val dataLoader: DataLoader<Long, User> =
             dfe.getDataLoader("users") ?: throw IllegalStateException("DataLoader 'users' not found")
 
-        return dataLoader.load(id.toLong());
+        return dataLoader.load(id.toLong()).thenApply { it }
     }
 
     @DgsData(parentType = "Membership", field = "currentCard")
-    fun currentCard(dfe: DgsDataFetchingEnvironment): CompletableFuture<Card> {
+    fun currentCard(dfe: DgsDataFetchingEnvironment): CompletableFuture<Card?> {
         val membership = dfe.getSource<Membership>()
         val id = membership?.id ?: return CompletableFuture.completedFuture(null)
         val dataLoader: DataLoader<Long, Card> =
             dfe.getDataLoader("cards") ?: throw IllegalStateException("DataLoader 'cards' not found")
 
-        return dataLoader.load(id.toLong());
+        return dataLoader.load(id.toLong()).thenApply { it }
     }
 
     @DgsData(parentType = "Card", field = "currentStamps")
@@ -220,7 +220,7 @@ class GroupController(
     @DgsData(parentType = "Card", field = "stampHistories")
     fun stampHistories(dfe: DgsDataFetchingEnvironment): CompletableFuture<List<StampHistory>> {
         val card = dfe.getSource<Card>()
-        val id = card?.id ?: return CompletableFuture.completedFuture(null)
+        val id = card?.id ?: return CompletableFuture.completedFuture(emptyList())
         val dataLoader: DataLoader<Long, List<StampHistory>> =
             dfe.getDataLoader("stampHistories") ?: throw IllegalStateException("DataLoader 'stampHistories' not found")
 

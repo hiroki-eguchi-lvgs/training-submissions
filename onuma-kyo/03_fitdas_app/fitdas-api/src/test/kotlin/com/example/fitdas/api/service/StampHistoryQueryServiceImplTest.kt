@@ -1,7 +1,13 @@
 package com.example.fitdas.api.service
 
 import com.example.fitdas.api.common.extension.toJST
-import com.example.fitdas.api.domain.*
+import com.example.fitdas.api.domain.entity.Card
+import com.example.fitdas.api.domain.entity.Group
+import com.example.fitdas.api.domain.entity.Membership
+import com.example.fitdas.api.domain.entity.MigratingStatus
+import com.example.fitdas.api.domain.entity.Stamp
+import com.example.fitdas.api.domain.entity.StampHistory
+import com.example.fitdas.api.domain.entity.User
 import com.example.fitdas.api.infrastructure.StampHistoryRepository
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
@@ -80,9 +86,9 @@ class StampHistoryQueryServiceImplTest {
                 stampsToReward = 10,
             )
         )
-        val firstCard = com.example.fitdas.api.domain.Card(firstMembership).apply { id = firstTargetId }
-        val secondCard = com.example.fitdas.api.domain.Card(secondMembership).apply { id = secondTargetId }
-        val thirdCard = com.example.fitdas.api.domain.Card(thirdMembership).apply { id = thirdTargetId }
+        val firstCard = Card(firstMembership).apply { id = firstTargetId }
+        val secondCard = Card(secondMembership).apply { id = secondTargetId }
+        val thirdCard = Card(thirdMembership).apply { id = thirdTargetId }
         val stamp = Stamp("http://example.com/stamp.png")
 
         val stampHistory1 = StampHistory(firstCard, stamp).apply { createdAt = FIXED_INSTANT }

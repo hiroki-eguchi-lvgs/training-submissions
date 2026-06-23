@@ -1,12 +1,12 @@
 package com.example.fitdas.api.service
 
 import com.example.fitdas.api.codegen.types.GroupInput
-import com.example.fitdas.api.domain.Group
-import com.example.fitdas.api.domain.MigratingStatus
-import com.example.fitdas.api.domain.RoleCode
+import com.example.fitdas.api.domain.entity.Group
+import com.example.fitdas.api.domain.entity.MigratingStatus
+import com.example.fitdas.api.domain.entity.RoleCode
+import com.example.fitdas.api.domain.logic.CardLogic
+import com.example.fitdas.api.domain.logic.GroupLogic
 import com.example.fitdas.api.exception.BusinessException
-import com.example.fitdas.api.logic.CardLogic
-import com.example.fitdas.api.logic.GroupLogic
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.context.ApplicationEventPublisher

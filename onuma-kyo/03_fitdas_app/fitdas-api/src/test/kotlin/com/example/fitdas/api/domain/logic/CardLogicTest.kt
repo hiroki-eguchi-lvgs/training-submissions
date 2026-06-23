@@ -1,6 +1,6 @@
-package com.example.fitdas.api.logic
+package com.example.fitdas.api.domain.logic
 
-import com.example.fitdas.api.domain.*
+import com.example.fitdas.api.domain.entity.*
 import com.example.fitdas.api.domain.event.UserStampMigratedEvent
 import com.example.fitdas.api.infrastructure.CardRepository
 import org.junit.jupiter.api.Assertions

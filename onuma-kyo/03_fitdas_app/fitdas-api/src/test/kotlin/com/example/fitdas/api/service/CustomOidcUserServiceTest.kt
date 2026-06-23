@@ -1,6 +1,6 @@
 package com.example.fitdas.api.service
 
-import com.example.fitdas.api.domain.User
+import com.example.fitdas.api.domain.entity.User
 import com.example.fitdas.api.infrastructure.CustomOidcUser
 import com.example.fitdas.api.infrastructure.UserRepository
 import org.junit.jupiter.api.*
@@ -17,6 +17,12 @@ import java.math.BigInteger
 import java.time.Instant
 
 class CustomOidcUserServiceTest {
+
+    companion object {
+        private val FIXED_INSTANT: Instant = Instant.parse("2026-06-23T10:00:00Z")
+        private val FIXED_INSTANT_FOR_EXPIRES_AT: Instant = FIXED_INSTANT.plusSeconds(3600)
+    }
+
     private lateinit var repository: UserRepository
 
     @BeforeEach
@@ -57,8 +63,8 @@ class CustomOidcUserServiceTest {
             .build()
 
         val idToken =
-            OidcIdToken("id-token", Instant.now(), Instant.now().plusSeconds(3600), mapOf("sub" to sub, "name" to name))
-        val accessToken = OAuth2AccessToken(TokenType.BEARER, "token", Instant.now(), Instant.now().plusSeconds(3600))
+            OidcIdToken("id-token", FIXED_INSTANT, FIXED_INSTANT_FOR_EXPIRES_AT, mapOf("sub" to sub, "name" to name))
+        val accessToken = OAuth2AccessToken(TokenType.BEARER, "token", FIXED_INSTANT, FIXED_INSTANT_FOR_EXPIRES_AT)
         val request = OidcUserRequest(clientRegistration, accessToken, idToken)
 
         // WHEN: モックした OidcUser を注入するためにサービスをサブクラス化（ネットワーク呼び出しを回避）
@@ -104,8 +110,8 @@ class CustomOidcUserServiceTest {
             .build()
 
         val idToken =
-            OidcIdToken("id-token", Instant.now(), Instant.now().plusSeconds(3600), mapOf("sub" to sub, "name" to name))
-        val accessToken = OAuth2AccessToken(TokenType.BEARER, "token", Instant.now(), Instant.now().plusSeconds(3600))
+            OidcIdToken("id-token", FIXED_INSTANT, FIXED_INSTANT_FOR_EXPIRES_AT, mapOf("sub" to sub, "name" to name))
+        val accessToken = OAuth2AccessToken(TokenType.BEARER, "token", FIXED_INSTANT, FIXED_INSTANT_FOR_EXPIRES_AT)
         val request = OidcUserRequest(clientRegistration, accessToken, idToken)
 
         val sut = object : CustomOidcUserService(repository) {

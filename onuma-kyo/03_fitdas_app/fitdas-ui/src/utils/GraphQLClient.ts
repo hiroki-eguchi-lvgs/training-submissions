@@ -25,14 +25,17 @@ export const graphqlFetch = async (query: string, ...input: Object[]) => {
       console.error(`Error: ${error.message}`);
       console.log(error);
       // 業務エラーが存在する場合、呼び出し元に通知する
-      if (error?.extensions?.classification === 'BusinessException') {
+      if (
+        error?.extensions?.classification === 'BusinessException' ||
+        error?.extensions?.classification === 'AuthenticationCredentialsNotFoundException'
+      ) {
         businessErrorMessages.push(error.message);
       }
     }
     throw new Error(
       businessErrorMessages.length === 0
         ? 'サーバーエラーが発生しました'
-        : businessErrorMessages.join('¥n'),
+        : businessErrorMessages.join('\n'),
     );
   }
   return resObject.data;

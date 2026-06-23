@@ -1,6 +1,6 @@
 package com.example.fitdas.api.domain.event
 
-import com.example.fitdas.api.domain.MigratingStatus
+import com.example.fitdas.api.domain.entity.MigratingStatus
 
 data class UserStampMigratedEvent(
     val userId: Long,

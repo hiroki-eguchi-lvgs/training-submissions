@@ -1,4 +1,4 @@
-package com.example.fitdas.api.domain
+package com.example.fitdas.api.domain.entity
 
 import com.example.fitdas.api.codegen.types.Membership
 import com.example.fitdas.api.exception.BusinessException
@@ -79,7 +79,7 @@ class Membership(
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (other !is com.example.fitdas.api.domain.Membership) return false
+        if (other !is com.example.fitdas.api.domain.entity.Membership) return false
 
         if (user != other.user) return false
         if (group != other.group) return false

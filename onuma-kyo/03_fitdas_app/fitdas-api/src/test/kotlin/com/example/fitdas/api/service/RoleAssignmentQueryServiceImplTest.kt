@@ -1,6 +1,12 @@
 package com.example.fitdas.api.service
 
-import com.example.fitdas.api.domain.*
+import com.example.fitdas.api.domain.entity.Group
+import com.example.fitdas.api.domain.entity.Membership
+import com.example.fitdas.api.domain.entity.MigratingStatus
+import com.example.fitdas.api.domain.entity.Role
+import com.example.fitdas.api.domain.entity.RoleAssignment
+import com.example.fitdas.api.domain.entity.RoleCode
+import com.example.fitdas.api.domain.entity.User
 import com.example.fitdas.api.infrastructure.RoleAssignmentRepository
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach

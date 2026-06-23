@@ -1,7 +1,7 @@
-package com.example.fitdas.api.logic
+package com.example.fitdas.api.domain.logic
 
 import com.example.fitdas.api.codegen.types.GroupInput
-import com.example.fitdas.api.domain.*
+import com.example.fitdas.api.domain.entity.*
 import com.example.fitdas.api.exception.BusinessException
 import com.example.fitdas.api.infrastructure.GroupRepository
 import com.example.fitdas.api.infrastructure.RoleRepository
@@ -25,6 +25,7 @@ class GroupLogicTest {
             GroupLogic::class.java,
             "MAX_STAMPS_NUM"
         ) as Int
+        private val FIXED_INSTANT: LocalTime = LocalTime.of(12, 0)
     }
 
     private lateinit var sut: GroupLogic
@@ -51,7 +52,7 @@ class GroupLogicTest {
         // GIVEN
         val groupInput = GroupInput(
             name = "123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789001234567890123456789012345678901234",
-            scheduledStartAt = LocalTime.now(),
+            scheduledStartAt = FIXED_INSTANT,
             slackChannelUrl = URI.create("http://slack.com").toURL(),
             stampsToReward = 30,
             stampIds = emptyList()
@@ -67,7 +68,7 @@ class GroupLogicTest {
         // GIVEN
         val groupInput = GroupInput(
             name = "",
-            scheduledStartAt = LocalTime.now(),
+            scheduledStartAt = FIXED_INSTANT,
             slackChannelUrl = URI.create("http://slack.com").toURL(),
             stampsToReward = 10,
             stampIds = emptyList()
@@ -83,7 +84,7 @@ class GroupLogicTest {
         // GIVEN
         val groupInput = GroupInput(
             name = "1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890012345678901234567890123456789012345",
-            scheduledStartAt = LocalTime.now(),
+            scheduledStartAt = FIXED_INSTANT,
             slackChannelUrl = URI.create("http://slack.com").toURL(),
             stampsToReward = 10,
             stampIds = emptyList()
@@ -99,7 +100,7 @@ class GroupLogicTest {
         // GIVEN
         val groupInput = GroupInput(
             name = "123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789001234567890123456789012345678901234",
-            scheduledStartAt = LocalTime.now(),
+            scheduledStartAt = FIXED_INSTANT,
             slackChannelUrl = URI.create("http://slack.com").toURL(),
             stampsToReward = 31,
             stampIds = emptyList()
@@ -120,7 +121,7 @@ class GroupLogicTest {
         val targetGroupId = 2L
         val groupInput = GroupInput(
             name = "testGroup",
-            scheduledStartAt = LocalTime.now(),
+            scheduledStartAt = FIXED_INSTANT,
             slackChannelUrl = URI.create("http://slack.com").toURL(),
             stampsToReward = 10,
             stampIds = emptyList()
@@ -187,7 +188,7 @@ class GroupLogicTest {
         val targetStampIssuerId = 1L
         val groupInput = GroupInput(
             name = "testGroup",
-            scheduledStartAt = LocalTime.now(),
+            scheduledStartAt = FIXED_INSTANT,
             slackChannelUrl = URI.create("http://slack.com").toURL(),
             stampsToReward = 10,
             stampIds = emptyList()
@@ -217,7 +218,7 @@ class GroupLogicTest {
         val targetStampIssuerId = 1L
         val groupInput = GroupInput(
             name = "testGroup",
-            scheduledStartAt = LocalTime.now(),
+            scheduledStartAt = FIXED_INSTANT,
             slackChannelUrl = URI.create("http://slack.com").toURL(),
             stampsToReward = 10,
             stampIds = emptyList()
@@ -242,7 +243,7 @@ class GroupLogicTest {
         val targetStampIssuerId = 1L
         val groupInput = GroupInput(
             name = "testGroup",
-            scheduledStartAt = LocalTime.now(),
+            scheduledStartAt = FIXED_INSTANT,
             slackChannelUrl = URI.create("http://slack.com").toURL(),
             stampsToReward = 10,
             stampIds = emptyList()

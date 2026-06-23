@@ -1,7 +1,7 @@
-package com.example.fitdas.api.logic
+package com.example.fitdas.api.domain.logic
 
-import com.example.fitdas.api.domain.MigratingStatus
-import com.example.fitdas.api.domain.User
+import com.example.fitdas.api.domain.entity.MigratingStatus
+import com.example.fitdas.api.domain.entity.User
 import com.example.fitdas.api.domain.event.UserStampMigratedEvent
 import com.example.fitdas.api.exception.BusinessException
 import com.example.fitdas.api.infrastructure.UserRepository

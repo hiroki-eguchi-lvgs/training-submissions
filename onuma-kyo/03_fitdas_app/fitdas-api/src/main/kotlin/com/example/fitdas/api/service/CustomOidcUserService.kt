@@ -1,6 +1,6 @@
 package com.example.fitdas.api.service
 
-import com.example.fitdas.api.domain.User
+import com.example.fitdas.api.domain.entity.User
 import com.example.fitdas.api.infrastructure.CustomOidcUser
 import com.example.fitdas.api.infrastructure.UserRepository
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest

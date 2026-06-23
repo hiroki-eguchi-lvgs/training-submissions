@@ -1,7 +1,7 @@
 package com.example.fitdas.api.infrastructure
 
-import com.example.fitdas.api.domain.Role
-import com.example.fitdas.api.domain.RoleCode
+import com.example.fitdas.api.domain.entity.Role
+import com.example.fitdas.api.domain.entity.RoleCode
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface RoleRepository : JpaRepository<Role, Long> {
