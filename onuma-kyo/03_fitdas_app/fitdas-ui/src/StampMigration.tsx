@@ -85,7 +85,7 @@ function StampMigration() {
       console.log(response);
       const payload = Object.values(response)[0] as UserUpdatePayload;
       alert('処理が成功しました！');
-      console.log('サーバーからのレスポンス:', response);
+      console.log('サーバーからのレスポンス:', payload);
       refreshApp();
     } catch (error) {
       console.error(error);

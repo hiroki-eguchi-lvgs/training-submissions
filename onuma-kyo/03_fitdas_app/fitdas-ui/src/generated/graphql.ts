@@ -85,11 +85,10 @@ export type Membership = {
   userId: Scalars['ID']['output'];
 };
 
-export enum MigratingStatus {
-  Migrated = 'MIGRATED',
-  Migrating = 'MIGRATING',
-  Pending = 'PENDING'
-}
+export type MigratingStatus =
+  | 'MIGRATED'
+  | 'MIGRATING'
+  | 'PENDING';
 
 export type Mutation = {
   __typename?: 'Mutation';
@@ -164,10 +163,9 @@ export type QueryGroupMembershipsArgs = {
   id: Scalars['ID']['input'];
 };
 
-export enum RoleCode {
-  RoleRewardManager = 'ROLE_REWARD_MANAGER',
-  RoleStampIssuer = 'ROLE_STAMP_ISSUER'
-}
+export type RoleCode =
+  | 'ROLE_REWARD_MANAGER'
+  | 'ROLE_STAMP_ISSUER';
 
 export type Stamp = {
   __typename?: 'Stamp';

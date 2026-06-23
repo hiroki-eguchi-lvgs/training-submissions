@@ -1,6 +1,6 @@
-import { useState, useEffect, createContext, useContext } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
+import { type Me } from './generated/graphql';
 import * as graphqlClient from './utils/GraphQLClient';
-import { MigratingStatus, type Me } from './generated/graphql';
 
 export type ContextType = {
   userId: string;
@@ -54,7 +54,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         userId: user?.userId!,
         loading,
         isAuthenticated: !!user,
-        isCompletedRegistration: user?.migratingStatus !== MigratingStatus.Pending,
+        isCompletedRegistration: user?.migratingStatus !== 'PENDING',
       }}
     >
       {children}

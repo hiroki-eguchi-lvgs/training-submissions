@@ -9,10 +9,9 @@ import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import './App.css';
 import type { GroupChangeMemberRolePayload, GroupDetail } from './generated/graphql';
-import SimpleDialog from './SimpleDialog';
 import * as graphqlClient from './utils/GraphQLClient';
 
 const GROUP_DETAIL = `
@@ -61,24 +60,9 @@ const GROUP_CHANGE_MEMBER_ROLE = `
 
           `;
 
-function GroupDetail() {
+function GroupDetailScreen() {
   const { id } = useParams<{ id: string }>();
-  const [groupId, setGroupId] = useState(id);
   const [groupDetail, setGroupDetail] = useState<GroupDetail>();
-  const [open, setOpen] = useState(false);
-  const [dialogTitle, setDialogTitle] = useState('');
-  const [qrCodeSource, setQrCodeSource] = useState('');
-
-  const handleClickOpen = (dialogTitle: string, qrCodeSource: string) => {
-    setDialogTitle(dialogTitle);
-    setQrCodeSource(qrCodeSource);
-    setOpen(true);
-  };
-
-  const handleClose = (value: string) => {
-    setOpen(false);
-    // setSelectedValue(value);
-  };
 
   useEffect(() => {
     initialize();
@@ -86,7 +70,7 @@ function GroupDetail() {
 
   const initialize = async () => {
     try {
-      const response = await graphqlClient.graphqlFetch(GROUP_DETAIL, { id: groupId });
+      const response = await graphqlClient.graphqlFetch(GROUP_DETAIL, { id: id });
       console.log('response');
       console.log(response);
       const groupDetail = Object.values(response)[0] as GroupDetail;
@@ -102,7 +86,7 @@ function GroupDetail() {
     try {
       const response = await graphqlClient.graphqlFetch(
         GROUP_CHANGE_MEMBER_ROLE,
-        { id: groupId },
+        { id: id },
         { successorId: successorId },
         { roleCode: roleCode },
       );
@@ -110,16 +94,11 @@ function GroupDetail() {
       console.log(response);
       const payload = Object.values(response)[0] as GroupChangeMemberRolePayload;
       alert('処理が成功しました！');
-      console.log('サーバーからのレスポンス:', response);
+      console.log('サーバーからのレスポンス:', payload);
     } catch (error) {
       console.error(error);
       alert(error);
     }
-  };
-
-  const navigate = useNavigate();
-  const changePage = (path: string) => {
-    navigate(path);
   };
 
   return (
@@ -218,15 +197,9 @@ function GroupDetail() {
           </ListItem>
         ))}
       </List>
-      <SimpleDialog
-        dialogTitle={dialogTitle}
-        qrCodeSource={qrCodeSource}
-        open={open}
-        onClose={handleClose}
-      />
       {/* TODO: デバッグ用後で消す
       <pre>{JSON.stringify(groupDetail, null, 2)}</pre> */}
     </Box>
   );
 }
-export default GroupDetail;
+export default GroupDetailScreen;

@@ -1,14 +1,14 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
+import { AuthProvider } from './AuthProvider';
 import EditGroup from './EditGroup';
 import Executor from './Executor';
 import Home from './Home';
+import ProtectedRoute from './ProtectedRoute';
 import SocialLogin from './SocialLogin';
 import StampExecutor from './StampExecutor';
-import GroupDetail from './GroupDetail';
-import ProtectedRoute from './ProtectedRoute';
-import { AuthProvider } from './AuthProvider';
 import StampMigration from './StampMigration';
+import GroupDetailScreen from './GroupDetail';
 
 function App() {
   return (
@@ -20,7 +20,7 @@ function App() {
           <Route element={<ProtectedRoute />}>
             <Route path="/" element={<Home />} />
             <Route path="/editGroup/:id?" element={<EditGroup />} />
-            <Route path="/groupDetail/:id?" element={<GroupDetail />} />
+            <Route path="/groupDetail/:id?" element={<GroupDetailScreen />} />
             <Route path="/executor/:id?" element={<Executor />} />
             <Route path="/stampExecutor/:id?" element={<StampExecutor />} />
           </Route>

@@ -8,6 +8,9 @@ const config: CodegenConfig = {
     // 2. 出力先のファイルパス
     'src/generated/graphql.ts': {
       plugins: ['typescript'],
+      config: {
+        enumsAsTypes: true,
+      },
     },
   },
 };

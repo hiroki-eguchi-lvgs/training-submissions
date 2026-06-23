@@ -6,7 +6,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import './App.css';
 import type { GroupAddMemberPayload } from './generated/graphql';
@@ -43,7 +43,7 @@ function StampExecutor() {
       console.log('response');
       console.log(response);
       const payload = Object.values(response)[0] as GroupAddMemberPayload;
-      console.log('サーバーからのレスポンス:', response);
+      console.log('サーバーからのレスポンス:', payload);
       alert('スタンプGET！');
       changePage(`/groupDetail/${id}`);
     } catch (error) {

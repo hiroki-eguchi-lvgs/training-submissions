@@ -40,7 +40,7 @@ function Home() {
     setOpen(true);
   };
 
-  const handleClose = (value: string) => {
+  const handleClose = () => {
     setOpen(false);
     // setSelectedValue(value);
   };
