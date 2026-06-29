@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/detail.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <!-- 文字化け対策 -->
+    <meta charset="UTF-8" />
+    <!-- SEO対策とWeb検索の結果 -->
+    <title>DAYDAYTRAVEL | 旅行ブログ | 新着リスト</title>
+    <meta
+      name="description"
+      content="お手軽に誰でも記事を投稿できる旅行ブログの記事です。"
+    />
+    <!-- ビューポート設定 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body>
+    <!-- #################
+　　　　ヘッダー枠
+################# -->
+    <header class="header">
+      <div class="header-top">
+        <div class="header-top-text">DAYDAYTRAVEL</div>
+        <div class="tops-right">
+          <a href="http://localhost:3000/login.html" class="login-link">
+            <span>Login</span>
+          </a>
+          <a
+            href="http://localhost:3000/profile-editBlog.html"
+            class="profile-link"
+          >
+            <span>Profile</span>
+          </a>
+          <a href="http://localhost:3000/register.html" class="register-link">
+            <span class="color-box-text">Get started</span>
+          </a>
+        </div>
+      </div>
+    </header>
+    <!-- #################
+中段のコンテンツ（記事内容）  
+################# -->
+    <div class="article-wrapper">
+      <!-- #################
+メイン記事：著者情報
+################# -->
+      <main class="article-main">
+        <article>
+          <div class="main-author">
+            <div class="author-info-content">
+              <img
+                src="img/post/Bitmap2.png"
+                alt="著者であるKaren Smithのプロフィール画像"
+                class="profile-img"
+              />
+              <div class="namedate">
+                <p class="name">Karen Smith</p>
+                <time class="publish-date" datetime="2022-05-19"
+                  >19 Feb 2022</time
+                >
+              </div>
+            </div>
+            <div class="sns-share">
+              <img
+                src="img/post/bxl-twitter.png"
+                alt="Twitterでシェア"
+                class="sns"
+              />
+              <img
+                src="img/post/bxl-instagram-alt.png"
+                alt="インスタグラムでシェア"
+                class="sns"
+              />
+              <img
+                src="img/post/bxl-linkedin-square.png"
+                alt="リンクドインでシェア"
+                class="sns"
+              />
+              <img
+                src="img/post/bx-link-alt.png"
+                alt="リンクでシェア"
+                class="sns"
+              />
+            </div>
+          </div>
+          <!-- #################
+メイン記事：詳細
+################# -->
+          <div class="article-body" id="article-main">
+            <p class="article-culumn">culinary</p>
+            <h1 class="article-title" id="article-title">
+              記事タイトル記事タイトル記事タイトル
+            </h1>
+            <p class="article-main-text" id="article-content">
+              Even there are a lot of potential tourism in Semarang. Therefore
+              Semarang need more promotional for old potential Tourism.
+            </p>
+            <figure class="article-figure">
+              <img
+                src="img/common/image_14.png"
+                alt="今日の午後の食べ物のポートレート"
+                class="article-figure-img"
+              />
+              <figcaption class="article-figure-caption">
+                Food portrait this afternoon
+              </figcaption>
+            </figure>
+
+            <span class="white-box-text">Culinary</span>
+          </div>
+        </article>
+      </main>
+    </div>
+    <!-- JSによる操作 -->
+    <script>
+      const loadDetail = async () => {
+        const params = new URLSearchParams(window.location.search);
+        const articleId = params.get("id");
+
+        if (!articleId) {
+          alert("記事IDが見つかりません。一覧に戻ります。");
+          window.location.href = "list.html";
+          return;
+        }
+
+        try {
+          const response = await fetch(`/api/v1/detail/${articleId}`);
+          const result = await response.json();
+
+          if (result.success === true) {
+            const article = result.article;
+            document.getElementById("article-title").textContent =
+              article.title;
+            document.getElementById("article-content").textContent =
+              article.content;
+
+            //画像の処理をする。
+            if (article.images && article.images.length > 0) {
+              //メイン画像を選ぶ
+              const mainImage =
+                article.images.find((row) => row.is_main === 1) ||
+                article.images[0];
+              //画像を入れる場所
+              const imgElement = document.querySelector(".article-figure-img");
+
+              //画像のURLを取得する
+              if (imgElement) {
+                imgElement.src = `/uploads/${mainImage.file_name}`;
+                imgElement.alt = article.title; // アクセシビリティ向上
+                document.querySelector(".article-figure-caption").textContent =
+                  article.title; // キャプションにタイトルを表示
+              }
+            }
+          } else {
+            alert(result.message);
+            window.location.href = "list.html";
+            return;
+          }
+        } catch (err) {
+          console.error("通信エラー:", err);
+          alert("サーバーと通信できませんでした。");
+          window.location.href = "list.html";
+          return;
+        }
+      };
+
+      window.addEventListener("DOMContentLoaded", loadDetail);
+    </script>
+  </body>
+</html>

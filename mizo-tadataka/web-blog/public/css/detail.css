@@ -6,79 +6,80 @@
     詳細ページ:メイン記事：著者名
 ＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊*/
 .article-wrapper {
-    display: grid; /* フレックスボックスを使用 */
-    grid-template-columns: 4fr 1fr; /* メインコンテンツとサイドコンテンツの幅を指定 */
-    /* width: 100%;     */
-    gap: 4vw; /* メインコンテンツとサイドコンテンツの間のスペース */
-    padding: 5vw;
-    justify-items: center;   
+  display: grid; /* フレックスボックスを使用 */
+  grid-template-columns: 4fr 1fr; /* メインコンテンツとサイドコンテンツの幅を指定 */
+  /* width: 100%;     */
+  gap: 4vw; /* メインコンテンツとサイドコンテンツの間のスペース */
+  padding: 5vw;
+  justify-items: center;
 }
-.profile-img{
-    width:  clamp(1rem, 8vw, 16rem);
-    height:  clamp(1rem, 8vw, 16rem);
-    clip-path: circle( clamp(0.5rem, 4vw, 8rem) at 50% 50%); 
+.profile-img {
+  width: clamp(1rem, 8vw, 16rem);
+  height: clamp(1rem, 8vw, 16rem);
+  clip-path: circle(clamp(0.5rem, 4vw, 8rem) at 50% 50%);
 }
 /* メイン記事：投稿者情報の設定 */
-.author-info{
-    display: flex;
-    align-items: center;
-    margin-bottom: 2vw;
-    gap:1vw;
-    padding: 1.2vw;
-} 
-#main-author.author-info{
-      justify-content: space-between; 
+.author-info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2vw;
+  gap: 1vw;
+  padding: 1.2vw;
+}
+.main-author {
+  display: flex;
+  justify-content: space-between;
 }
 .author-info-content {
   display: flex;
   gap: 1vw;
 }
 
-.namedate{  
-    font-size:  clamp(0.5rem, 1.2vw, 13rem);
-    line-height: 1.5vw;
+.namedate {
+  font-size: clamp(0.5rem, 1.2vw, 13rem);
+  line-height: 1.5vw;
 }
-.publish-date{
-    color: var(--text-color-main);
+.publish-date {
+  color: var(--text-color-main);
 }
-.sns-share{
-    display: flex;
-    max-width: 100%;
+.sns-share {
+  display: flex;
+  max-width: 100%;
 }
 .sns {
-  width:  clamp(1rem, 3vw, 10rem);
+  width: clamp(1rem, 3vw, 10rem);
   height: clamp(1rem, 3vw, 10rem);
 }
 /*＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
     詳細ページ:メイン記事
 ＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊*/
-.article-body{
-    margin-top: 4vw;
-    width: 100%;
+.article-body {
+  margin-top: 4vw;
+  width: 100%;
 }
-.article-culumn{
-    font-size: clamp(0.5rem, 1.4vw, 10rem);
-    color: var(--title-color);
+.article-culumn {
+  font-size: clamp(0.5rem, 1.4vw, 10rem);
+  color: var(--title-color);
 }
-.article-title{
-    font-size: clamp(1rem, 3vw, 10rem);
-    font-weight: 200;
+.article-title {
+  font-size: clamp(1rem, 3vw, 10rem);
+  font-weight: 200;
 }
-.article-main-text{
-    font-size: clamp(0.7rem, 1.5vw, 4rem);
-    color: var(--text-color-main);
+.article-main-text {
+  font-size: clamp(0.7rem, 1.5vw, 4rem);
+  color: var(--text-color-main);
 }
-.article-figure img{
+.article-figure-img {
   width: 100%;
   height: auto;
 }
 .article-figure-caption {
-    text-align: center;
-    font-size: clamp(0.5rem, 1.3vw, 10rem);
-    color: var(--text-color-main);
+  text-align: center;
+  font-size: clamp(0.5rem, 1.3vw, 10rem);
+  color: var(--text-color-main);
 }
-.article-sub-title{
-    font-size: clamp(0.7rem, 1.5vw, 12rem);
+.article-sub-title {
+  font-size: clamp(0.7rem, 1.5vw, 12rem);
 }
 /*＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
     詳細ページ:サイドコンテンツ
@@ -87,54 +88,53 @@
   justify-items: start;
   padding: 0 3vw 0 0;
 }
-.article-side-title{
-    font-size: clamp(1rem, 1.8vw, 12rem);
+.article-side-title {
+  font-size: clamp(1rem, 1.8vw, 12rem);
   /* より太く（数値指定） */
-    font-weight: 800;
-    color:black;
+  font-weight: 800;
+  color: black;
 }
 .grid-container-post-sub {
   display: grid;
-  grid-template-columns: 24vw; 
+  grid-template-columns: 24vw;
   justify-content: start;
   gap: 5vw; /* グリッドアイテム間のスペース */
   margin-top: 5vw;
 }
 .authors {
-  padding-top: 8vw ;
+  padding-top: 8vw;
 }
 /*＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
     　  レスポンシブ対応
 ＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊*/
-@media screen and (max-width: 800px)
-{
-/*＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
+@media screen and (max-width: 800px) {
+  /*＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
           　詳細ページ
 ＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊*/
-.article-wrapper {
+  .article-wrapper {
     grid-template-columns: 1fr; /* メインコンテンツとサイドコンテンツの幅を指定 */
-    justify-items: center;      
-}
-.article-sub {
-  padding: 0 0 0 0;
-}
-.article-side-title{
+    justify-items: center;
+  }
+  .article-sub {
+    padding: 0;
+  }
+  .article-side-title {
     justify-self: center;
-}
-.grid-container-post-sub {
-  display: grid;
-  grid-template-columns: 1fr; 
-  padding: 3vw 15vw 5vw;
-  margin-top: 5vw;
-}
-.authors {
-  justify-self: center;
-  padding-top: 8vw ;
-}
-.authors-grid{
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-}
+  }
+  .grid-container-post-sub {
+    display: grid;
+    grid-template-columns: 1fr;
+    padding: 3vw 15vw 5vw;
+    margin-top: 5vw;
+  }
+  .authors {
+    justify-self: center;
+    padding-top: 8vw;
+  }
+  .authors-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
 }
 /*＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
           　完了

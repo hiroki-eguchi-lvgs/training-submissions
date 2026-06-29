@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/detail.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <!-- 文字化け対策 -->
+    <meta charset="UTF-8" />
+    <!-- SEO対策とWeb検索の結果 -->
+    <title>DAYDAYTRAVEL | 旅行ブログ | 新着リスト</title>
+    <meta
+      name="description"
+      content="お手軽に誰でも記事を投稿できる旅行ブログの新着リストです。"
+    />
+    <!-- ビューポート設定 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body>
+    <h1 class="login-title">新着リスト</h1>
+    <div class="grid-container" id="article-list">
+      <!-- <article class="grid-article" >
+        <a href="post-detail.html" class="grid-item">
+          <div class="item-image">
+            <img src="img/top/travel-1.png" alt="インドネシアの日常" />
+          </div>
+          <div class="item-content" id="japanese_caracter">
+            <span class="item-column">Travel</span>
+            <span class="item-date-span"> | </span>
+            <time class="item-date" datetime="2022-04-29"> 29 Apr 2022</time>
+            <h3 class="item-title">
+              記事タイトル記事タイトル記事タイトル記事タイトル
+            </h3>
+            <p class="item-desc">本文の一部を表示本文の一部を表示本文の_</p>
+          </div>
+        </a>
+      </article> -->
+    </div>
+    <!-- JSによる操作 -->
+    <script>
+      const escapeHTML = (str) => {
+        if (!str) return "";
+        return String(str)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#x27;");
+      };
+      const loadArticles = async () => {
+        const newarticlelist = document.getElementById("article-list");
+
+        try {
+          const response = await fetch("/api/v1/list");
+          const result = await response.json();
+
+          if (result.success === true) {
+            // alert(result.message);
+            // データを空にする
+            newarticlelist.innerHTML = "";
+            // データを取得する
+            result.articles.forEach((article) => {
+              // 画像の処理をする。
+              const imgSrc = article.file_name
+                ? `/uploads/${article.file_name}`
+                : "/img/common/image_14.png";
+              //日付の処理をする
+              //datetime
+              const date = new Date(article.created_at);
+              const machineDate = date.toISOString().split("T")[0];
+              //表示用の日付
+              const humanDate = date
+                .toLocaleDateString("en-GB", {
+                  day: "2-digit",
+                  month: "short",
+                  year: "numeric",
+                })
+                .replace(/\s/g, " ");
+
+              // HTMLに埋め込む
+              const html = `<article class="grid-article" >
+       <a href="post-detail.html?id=${article.article_id}" class="grid-item">
+          <div class="item-image">
+            <img src="${imgSrc}" alt="" />
+          </div>
+          <div class="item-content">
+            <span class="item-column">Travel</span>
+            <span class="item-date-span"> | </span>
+            <time class="item-date" datetime="${machineDate}">${humanDate}</time>
+            <h3 class="item-title">
+              ${escapeHTML(article.article_title)}
+            </h3>
+         <p class="item-desc">${escapeHTML(article.summary)}</p>
+          </div>
+        </a>
+      </article>`;
+              newarticlelist.insertAdjacentHTML("beforeend", html);
+            });
+          } else {
+            alert(result.message);
+          }
+        } catch (err) {
+          console.error("通信エラー:", err);
+          alert("サーバーと通信できませんでした。");
+        }
+      };
+      window.addEventListener("DOMContentLoaded", loadArticles);
+    </script>
+  </body>
+</html>

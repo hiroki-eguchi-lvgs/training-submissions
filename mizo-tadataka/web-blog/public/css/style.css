@@ -1,14 +1,16 @@
 @charset "UTF-8";
-body { margin: 0; }
-html{
+body {
+  margin: 0;
+}
+html {
   font-size: clamp(1rem, 1vw, 2rem);
 }
 /*＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
             ヘッダー設定
 ＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊*/
-.header-top  { 
-  display: flex; 
-  justify-content: space-between; 
+.header-top {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
   border-bottom: 0.2vw solid var(--text-color-sub);
   padding: 1vw 4vw 1vw;
@@ -25,17 +27,26 @@ html{
   gap: 2vw;
 }
 /* ログインのリンク */
+.profile-link {
+  font-size: clamp(1rem, 2vw, 3rem);
+  color: black;
+  text-decoration: none; /* 下線を消す */
+}
 .login-link {
   font-size: clamp(1rem, 2vw, 3rem);
   color: black;
   text-decoration: none; /* 下線を消す */
 }
-
-.color-box-text{
+.register-link {
+  font-size: clamp(1rem, 2vw, 3rem);
+  color: black;
+  text-decoration: none; /* 下線を消す */
+}
+.color-box-text {
   background-color: var(--title-color);
   font-size: clamp(0.5rem, 1.4vw, 4rem);
   color: white;
-  padding: 1.5vw 1.8vw; */
+  padding: 1.5vw 1.8vw;
 }
 /*＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
           　トップページ
@@ -45,24 +56,24 @@ html{
 ＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊*/
 /* 中央の画像ブロック */
 .hero-area img {
-/*画像を画面いっぱいに広げる */
-  width: 100%;      
+  /*画像を画面いっぱいに広げる */
+  width: 100%;
 }
-.hero-area  { 
+.hero-area {
   position: relative;
 }
 .header-text {
   position: fixed;
-  position: absolute;  /* 画像の上に浮かせます */
-  top: 10%;           
+  position: absolute; /* 画像の上に浮かせます */
+  top: 10%;
   left: 7%;
-  font-size:  clamp(1rem, 5vw, 12rem);
+  font-size: clamp(1rem, 5vw, 12rem);
   font-weight: 800; /* より太く（数値指定） */
 }
 .header-text-sub {
   position: fixed;
-  position: absolute;  /* 画像の上に浮かせます */
-  top: 45%;           
+  position: absolute; /* 画像の上に浮かせます */
+  top: 45%;
   left: 7%;
   font-size: clamp(0.4rem, 1.7vw, 10rem);
 }
@@ -71,9 +82,9 @@ html{
 ＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊*/
 /* ページ全体 */
 .main-content-wrapper {
-  display: grid; 
+  display: grid;
   grid-template-columns: 2fr 1fr; /* メインコンテンツとサイドコンテンツの幅を指定 */
-  width: 100%;    
+  width: 100%;
   gap: 10vw; /* メインコンテンツとサイドコンテンツの間のスペース */
 }
 /* 一覧作り */
@@ -83,44 +94,55 @@ html{
   grid-template-columns: 24vw 24vw; /* 2列のグリッド */
   justify-content: start;
   gap: 3vw; /* グリッドアイテム間のスペース */
-  padding-top:  4vw;
+  padding-top: 4vw;
 }
 /* 個別設定 */
 .main-content-title {
-  font-size:  clamp(1rem, 1.7vw, 10rem);
+  font-size: clamp(1rem, 1.7vw, 10rem);
   /* より太く（数値指定） */
   font-weight: 800;
-  color:black;
-  padding-top: 10vw;           
+  color: black;
+  padding-top: 10vw;
 }
 .main-content {
-   margin-left: 5vw;
+  margin-left: 5vw;
 }
-/* コラムと日付を横並びにするためのスタイル */ 
+/* コラムと日付を横並びにするためのスタイル */
 .item-column {
-  color:   var(--title-color);
+  color: var(--title-color);
 }
 .item-date {
-  color:  var(--text-color-main); 
+  color: var(--text-color-main);
 }
 .item-date-span {
-  color:  var(--text-color-sub); 
+  color: var(--text-color-sub);
 }
 /* グリッド内のコンテンツ設定 */
-.grid-item img{
-  width: 100%;       /* 横幅は枠いっぱいに */
+.grid-item img {
+  width: 100%; /* 横幅は枠いっぱいに */
   /* height: 250%; */
 }
 .grid-item {
   text-decoration: none; /* 下線を消す */
-  font-size:  clamp(0.8rem, 1.5vw, 8rem);;
+  font-size: clamp(0.8rem, 1.5vw, 8rem);
   color: black;
 }
-.item-title   {
+.item-title {
   margin-top: 15px;
   font-weight: 300;
   font-size: clamp(0.8rem, 1.7vw, 10rem);
-  color:black;
+  color: black;
+  /* 行間と最低限確保の高さ指定 */
+  line-height: 1.5;
+  min-height: 3em;
+  /* 強制改行 */
+  overflow-wrap: anywhere;
+  /* 長過ぎるときは...にする */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
 }
 .item-desc {
   font-size: clamp(0.8rem, 1.5vw, 8rem);
@@ -131,57 +153,57 @@ html{
 ＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊*/
 /* 中段サイドコンテンツ作り */
 .side-content {
- padding: 10vw 3vw 0 0;
+  padding: 10vw 3vw 0 0;
 }
 /* 中段のサイドコンテンツ上側 */
-.grid-container-side1 {
+.grid-container-side-popular {
   display: grid;
   grid-template-columns: 1fr; /* 1列のグリッド */
   gap: 1vw; /* グリッドアイテム間のスペース */
   padding: 0vw 5vw 0vw 0vw; /* 上右下左の順で余白を指定 */
-  }
-.side-content-title-1 {
+}
+.side-content-title-popular {
   font-size: clamp(0.8rem, 1.7vw, 10rem);
   /* より太く（数値指定） */
   font-weight: 800;
-  color:black;      
+  color: black;
 }
 .side-item-title {
   font-size: clamp(1rem, 1.5vw, 6rem);
-  color:black;  
-  margin-bottom: 3vw;    
+  color: black;
+  margin-bottom: 3vw;
 }
 .side-content1:not(:last-child) {
-  border-bottom: 1px solid var(--text-color-sub); /* 下線を引く */  
+  border-bottom: 1px solid var(--text-color-sub); /* 下線を引く */
 }
 /*＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
   トップページのサイドコンテンツ（もっと見る（機能不要））
 ＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊*/
 /* 中段のサイドコンテンツ下側 */
-.side-content-title-2 {
+.side-content-title-more {
   font-size: clamp(1rem, 1.7vw, 10rem);
   /* より太く（数値指定） */
   font-weight: 800;
-  color:black;
-  margin-top: 5vw; 
+  color: black;
+  margin-top: 5vw;
 }
-.container-side2 {
+.container-side-more {
   display: flex; /* フレックスボックスを使用 */
   padding-top: 1vw;
-  gap:  2vw;  
+  gap: 2vw;
 }
 .white-box-text {
-  font-size: clamp(0.8rem, 1.5vw, 8rem);;
-  color: var(--text-color-main);  
+  font-size: clamp(0.8rem, 1.5vw, 8rem);
+  color: var(--text-color-main);
   border: 1px solid var(--text-color-sub);
   justify-content: space-between; /* 左右にスペースを均等に配置 */
   align-items: center; /* 縦方向の中央揃え */
-  padding: 0.8vw;  
+  padding: 0.8vw;
 }
 /*＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
           　フッター
 ＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊*/
-.footer{
+.footer {
   background-color: #121212;
   margin-top: 20vw;
   padding: 5vw 5vw 0;
@@ -189,18 +211,17 @@ html{
 }
 .footer-wrapper {
   display: grid; /* フレックスボックスを使用 */
-  grid-template-columns: repeat(2, 1fr) 0.5fr 1fr; 
-  padding-bottom: 5vw; 
+  grid-template-columns: repeat(2, 1fr) 0.5fr 1fr;
+  padding-bottom: 5vw;
 }
 .footer-text-title {
   font-size: 1vw;
-  color: white; 
-  align-items: center ; /* 左右にスペースを均等に配置 */
-} 
+  color: white;
+  align-items: center; /* 左右にスペースを均等に配置 */
+}
 .Footer-text {
   font-size: 1vw;
   color: rgba(255, 255, 255, 0.5); /* 白の50%の透明度 */
-
 }
 /*＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
       フッター(コピーライト)
@@ -212,80 +233,78 @@ html{
   padding-bottom: 1vw;
 }
 /* 下段の画像設定 */
-.app-wrapper img
-{
-  width: 50%;       /* 横幅は枠いっぱいに */
-  height: 50%;     /* 高さは自動で調整 */
-  border-radius:1vw;
+.appstore {
+  width: 50%; /* 横幅は枠いっぱいに */
+  height: 50%; /* 高さは自動で調整 */
+  border-radius: 1vw;
   object-fit: contain;
 }
- /*＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
+/*＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
     　  レスポンシブ対応
 ＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊*/
-@media screen and (max-width: 800px)
-{
-/*＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
+@media screen and (max-width: 800px) {
+  /*＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
   トップページのメインコンテンツの一覧
 ＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊*/
-.main-content-wrapper {
-  grid-template-columns: 1fr; /* メインコンテンツとサイドコンテンツの幅を指定 */  
-}
-.main-content {
-   margin-left: 0vw;
-}
-.grid-container {
-  grid-template-columns: 1fr; /* 2列のグリッド */
-  justify-self: center;
-  gap: 3vw; /* グリッドアイテム間のスペース */
-  padding: 8vw;
-}
-.main-content-title {
-  justify-self: center;      
-}
-.item-title   {
-  margin-top: 2vw;
-}
-/*＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
+  .main-content-wrapper {
+    grid-template-columns: 1fr; /* メインコンテンツとサイドコンテンツの幅を指定 */
+  }
+  .main-content {
+    margin-left: 0vw;
+  }
+  .grid-container {
+    grid-template-columns: 1fr; /* 2列のグリッド */
+    justify-self: center;
+    gap: 3vw; /* グリッドアイテム間のスペース */
+    padding: 8vw;
+  }
+  .main-content-title {
+    justify-self: center;
+  }
+  .item-title {
+    margin-top: 2vw;
+  }
+  /*＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
   トップページのサイドコンテンツの一覧
 ＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊*/
-/*＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
+  /*＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
   トップページのサイドコンテンツ（人気記事：機能不要）
 ＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊*/
-.grid-container-side1 {
-  padding: 0vw 15vw 15vw; /* 上右下左の順で余白を指定 */
+  .grid-container-side-popular {
+    padding: 0vw 15vw 15vw; /* 上右下左の順で余白を指定 */
   }
-/* 中段のサイドコンテンツ上側 */
-.side-content-title-1 {
-  justify-self: center;
-}
-.new-posts {
-  justify-self: center;
-}
-.recommend-posts{
-  justify-self: center;
-}
-/*＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
+  /* 中段のサイドコンテンツ上側 */
+  .side-content-title-popular {
+    justify-self: center;
+  }
+  .new-posts {
+    justify-self: center;
+  }
+  .recommend-posts {
+    justify-self: center;
+  }
+  /*＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
   トップページのサイドコンテンツ（もっと見る（機能不要））
 ＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊*/
-.container-side2 {
-  display: flex; /* フレックスボックスを使用 */
-  padding-top: 4vw;
-  gap:  4vw;
-}
-/*＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
+  .container-side-more {
+    display: flex; /* フレックスボックスを使用 */
+    padding-top: 4vw;
+    gap: 4vw;
+  }
+  /*＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
           　フッター
 ＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊*/
-.footer-wrapper {
-  display: grid; /* フレックスボックスを使用 */
-  grid-template-columns: repeat(2, 1fr); 
-  padding: 5vw;
-}
-.footer-text-title {
-  font-size: 2vw;
-} 
-.Footer-text {
-  font-size: 2vw;
-}
+  .footer-wrapper {
+    display: grid; /* フレックスボックスを使用 */
+    grid-template-columns: repeat(2, 1fr);
+    padding: 5vw;
+  }
+  .footer-text-title {
+    font-size: 2vw;
+  }
+  .Footer-text {
+    font-size: 2vw;
+  }
 }
 /*＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
           　完了

@@ -16,17 +16,25 @@
 <!-- #################
 　　　　ヘッダー枠
 ################# -->
-    <header class="header">
-        <div class="header-top">
-            <h1 class="header-top-text">DAYDAYTRAVEL</h1>
-            <div class = "tops-right">
-                <a href="https://www.sejuku.net/blog/83237" class="login-link"><span>Login</span></a>
-                <div class="color-box">
-                    <span class="color-box-text">Get started</span>
-                </div>
-            </div>
+ <header class="header">
+      <div class="header-top">
+        <div class="header-top-text">DAYDAYTRAVEL</div>
+        <div class="tops-right">
+          <a href="http://localhost:3000/login.html" class="login-link">
+            <span>Login</span>
+          </a>
+          <a
+            href="http://localhost:3000/profile-editBlog.html"
+            class="profile-link"
+          >
+            <span>Profile</span>
+          </a>
+          <a href="http://localhost:3000/register.html" class="register-link">
+            <span class="color-box-text">Get started</span>
+          </a>
         </div>
-    </header>     
+      </div>
+    </header> 
 <!-- #################
 中段のコンテンツ（記事内容）  
 ################# -->   
@@ -36,43 +44,67 @@
 ################# -->   
         <main class="article-main">
             <article>
-                <div class="author-info" id ="main-author">
+                <div class="main-author">
                     <div class="author-info-content">
-                        <img src="img/post/Bitmap2.png" alt="著者であるKaren Smithのプロフィール画像" class="profile-img"> 
-                        <div class="namedate">
-                            <p class="name">Karen Smith</p>
-                            <time class="publish-date" datetime="2022-05-19">19 Feb 2022</time>
-                        </div>
+                    <img
+                        src="img/post/Bitmap2.png"
+                        alt="著者であるKaren Smithのプロフィール画像"
+                        class="profile-img"
+                    />
+                    <div class="namedate">
+                        <p class="name">Karen Smith</p>
+                        <time class="publish-date" datetime="2022-05-19"
+                        >19 Feb 2022</time
+                        >
+                    </div>
                     </div>
                     <div class="sns-share">
-                        <img src="img/post/bxl-twitter.png" alt="Twitterでシェア" class="sns">
-                        <img src="img/post/bxl-instagram-alt.png" alt="インスタグラムでシェア"class="sns">             
-                        <img src="img/post/bxl-linkedin-square.png" alt="リンクドインでシェア"class="sns">
-                        <img src="img/post/bx-link-alt.png" alt="リンクでシェア"class="sns">
+                    <img
+                        src="img/post/bxl-twitter.png"
+                        alt="Twitterでシェア"
+                        class="sns"
+                    />
+                    <img
+                        src="img/post/bxl-instagram-alt.png"
+                        alt="インスタグラムでシェア"
+                        class="sns"
+                    />
+                    <img
+                        src="img/post/bxl-linkedin-square.png"
+                        alt="リンクドインでシェア"
+                        class="sns"
+                    />
+                    <img
+                        src="img/post/bx-link-alt.png"
+                        alt="リンクでシェア"
+                        class="sns"
+                    />
                     </div>
                 </div>
-<!-- #################
-メイン記事：詳細
-################# -->   
-                <div class="article-body">
+                <!-- #################
+        メイン記事：詳細
+        ################# -->
+                <div class="article-body" id="article-main">
                     <p class="article-culumn">culinary</p>
-                    <h1 class="article-title">記事タイトル記事タイトル記事タイトル</h1>
-                    <p class="article-main-text">Even there are a lot of potential tourism in Semarang. Therefore Semarang need  more promotional for old potential Tourism.</p>
+                    <h1 class="article-title" id="article-title">
+                    記事タイトル記事タイトル記事タイトル
+                    </h1>
+                    <p class="article-main-text" id="article-content">
+                    Even there are a lot of potential tourism in Semarang. Therefore
+                    Semarang need more promotional for old potential Tourism.
+                    </p>
                     <figure class="article-figure">
-                        <img src="img/common/image_14.png" alt="今日の午後の食べ物のポートレート">
-                        <figcaption class="article-figure-caption">Food portrait this afternoon</figcaption>
+                    <img
+                        src="img/common/image_14.png"
+                        alt="今日の午後の食べ物のポートレート"
+                        class="article-figure-img"
+                    />
+                    <figcaption class="article-figure-caption">
+                        Food portrait this afternoon
+                    </figcaption>
                     </figure>
-                    <p class="article-main-text">Lorem ipsum dolor sit amet consectetur. Nascetur hendrerit mauris in elit viverra consectetur. Enim placerat consectetur leo at pulvinar iaculis sit. Quam nec amet. lofaucibus nunc. Est nec feugiat congue viverra. Enim u</p>
-                    <p class="article-main-text">Lorem ipsum dolor sit amet consectetur. Urna ipsum praesent at nunc habitasse porttitor consequat risus adipiscing. Ut enim ultricies non lectus. Fringilla duis purus cursus dui sed neque ridiculus. Faucibus et ante faucibus nunc. Est nec feugiat congue viverra. Enim ut lacus malesuada est purus tellus ac condimentum. Dignissim lacinia malesuada nisl condimentum lectus euismod.</p>
-                    <h2 class="article-sub-title">Your gene pool depth chart</h2>
-                    <p class="article-main-text">Sit amet consectetur. Urna ipsum praesent at nunc habitasse porttitor consequat risus adipiscing. Ut enim ultricies non lectus. Fringilla duis purus cursus dui sed neque ridiculus. Faucibus et ante faucibus nunc. Est nec feugiat congue. Enim ut lacus malesuada est purus tellus ac condimentum. Dignissim lacinia malesuada nisl condimentum lectus euismod.</p>
-                    <p class="article-main-text">Dolor sit amet consectetur. Nascetur hendrerit mauris in elit viverra consectetur. Enim placerat consectetur leo at pulvinar iaculis sit. Quam nec amet mauris sit. Adipiscing orci integer bibendum vitae sit. Porttitor.</p>
-                    <figure class="article-figure">            
-                        <img src="img/post/img3_4.png" alt="自転車と食事の風景">
-                    </figure>               
-                    <p class="article-main-text">Amet consectetur. Urna ipsum praesent at nunc habitasse porttitor consequat risus adipiscing. Ut enim ultricies non lectus. Fringilla duis purus cursus dui sed neque ridiculus. Faucibus et ante faucibus nunc. Est nec feugiat congue viverra. Enim ut lacus malesuada est purus tellus ac condimentum. Dignissim lacinia malesuada nisl condimentum lectus euismod.</p>
-                    <p class="article-main-text">Urna ipsum praesent at nunc habitasse porttitor consequat risus adipiscing. Ut enim ultricies non lectus. Fringilla duis purus cursus dui sed neque ridiculus. lel Faucibus et ante faucibus nunc. Est nec feugiat congue. </p>
-                    <span class="white-box-text">Culinary</span>                              
+
+                    <span class="white-box-text">Culinary</span>
                 </div>
             </article>
 <!-- #################
@@ -230,8 +262,8 @@
                 <div class="footer-col">
                     <p class="footer-text-title">Download app</p>
                     <div class="app-wrapper">
-                            <img src="img/common/App.jpeg" alt="App Storeでダウンロード">        
-                            <img src="img/common/Play.jpeg" alt="Google Playでダウンロード">                    
+                            <img src="img/common/App.jpeg" alt="App Storeでダウンロード" class="appstore">        
+                            <img src="img/common/Play.jpeg" alt="Google Playでダウンロード" class="appstore">                    
                     </div>
                 </div>   
             </div>
@@ -239,5 +271,63 @@
                 <small>© 2023 PT. Travel Everyday Indonesia</small>
             </div>
         </footer>
+            <!-- JSによる操作 -->
+        <script>
+            const loadDetail = async () => {
+                const params = new URLSearchParams(window.location.search);
+                const articleId = params.get("id");
+
+                if (!articleId) {
+                alert("記事IDが見つかりません。一覧に戻ります。");
+                window.location.href = "list.html";
+                return;
+                }
+
+                try {
+                const response = await fetch(`/api/v1/detail/${articleId}`);
+                const result = await response.json();
+
+                if (result.success === true) {
+                    const article = result.article;
+                    document.getElementById("article-title").textContent =
+                    article.title;
+                    document.getElementById("article-content").textContent =
+                    article.content;
+
+                    //画像の処理をする。
+                    if (article.images && article.images.length > 0) {
+                    //メイン画像を選ぶ
+                    const mainImage =
+                        article.images.find((row) => row.is_main === 1) ||
+                        article.images[0];
+                    //画像を入れる場所
+                    const imgElement = document.querySelector(".article-figure-img");
+
+                    //画像のURLを取得する
+                    if (imgElement) {
+                        imgElement.src = `/uploads/${mainImage.file_name}`;
+                        imgElement.alt = article.title; // アクセシビリティ向上
+                        document.querySelector(".article-figure-caption").textContent =
+                        article.title; // キャプションにタイトルを表示
+                    }
+                    }
+                } else {
+                    alert(result.message);
+                    window.location.href = "list.html";
+                    return;
+                }
+                } catch (err) {
+                console.error("通信エラー:", err);
+                alert("サーバーと通信できませんでした。");
+                window.location.href = "list.html";
+                return;
+                }
+            };
+
+            window.addEventListener("DOMContentLoaded", loadDetail);
+        </script>
+
+
+
     </body>
 </html>
