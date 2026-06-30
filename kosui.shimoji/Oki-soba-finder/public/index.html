@@ -8,20 +8,32 @@
       rel="stylesheet"
       href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
     />
-    <style>
-      html,
-      body {
-        margin: 0;
-      }
-      #map {
-        height: 100vh;
-      }
-    </style>
+    <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
-    <div id="map"></div>
+    <header class="site-header">
+      <span class="brand">沖縄そばファインダー</span>
+      <span>
+        <a href="admin.html" id="admin-link" style="display: none">管理ページ</a>
+        <a href="#" id="logout-link">ログアウト</a>
+      </span>
+    </header>
+
+    <div class="layout">
+      <div id="map"></div>
+
+      <aside class="sidebar">
+        <div class="filters">
+          <button data-filter="all" class="active">すべて</button>
+          <button data-filter="lunch">昼</button>
+          <button data-filter="dinner">夜</button>
+        </div>
+        <div id="store-list"></div>
+      </aside>
+    </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="js/common.js"></script>
     <script src="js/main.js"></script>
   </body>
 </html>

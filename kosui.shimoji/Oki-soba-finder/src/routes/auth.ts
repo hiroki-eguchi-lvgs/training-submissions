@@ -29,7 +29,7 @@ export default async function authRoutes(fastify: FastifyInstance) {
         },
       },
     },
-    // RequestHandler
+    // RequestHandler で register() を呼び出してユーザー登録
     async (request, reply) => {
       const { login_id, password, user_name } = request.body;
       try {
