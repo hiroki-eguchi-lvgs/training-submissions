@@ -1,0 +1,36 @@
+spring:
+  application:
+    name: fitdas-api
+
+  # connect to database
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
+  # JPA Config
+  jpa:
+    hibernate:
+      ddl-auto: update
+      # Display session statistics (queries, time)
+      generate_statistics: true
+
+  # Security
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
+            # scopeは、デフォルトでopenid, profile, email が設定されるが、可読性向上のため明記
+            scope:
+              - openid
+              - profile
+              - email
+
+logging:
+  level:
+    # Detailed SQL query logging
+    org.hibernate.SQL: DEBUG

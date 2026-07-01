@@ -1,0 +1,147 @@
+type Query {
+    groups: [Group!]!
+    group(id: ID!): Group!
+    groupDetail(groupId: ID!): GroupDetail!
+    groupMemberships(id: ID!): [Membership!]!
+    card(groupId: ID!): Card!
+    me: Me!
+}
+
+type Mutation {
+    userUpdate(migratingStamps: Int): UserUpdatePayload
+    groupCreate(input: GroupInput): GroupCreatePayload
+    groupUpdate(id: ID!, input: GroupInput): GroupUpdatePayload
+    groupAddMember(id: ID!): GroupAddMemberPayload
+    groupChangeMemberRole(id: ID!, successorId: ID!, roleCode: String!): GroupChangeMemberRolePayload
+    groupStamp(id: ID!): GroupStampPayload
+}
+
+type User {
+    id: ID!
+    name: String!
+}
+
+type Me {
+    userId: ID!
+    migratingStatus: MigratingStatus!
+}
+
+enum MigratingStatus {
+    PENDING,
+    MIGRATING,
+    MIGRATED,
+}
+
+type Membership {
+    id: ID!
+    userId: ID!
+    user: User
+    roles: [RoleCode!]!
+    currentCard: Card
+}
+
+enum RoleCode {
+    ROLE_STAMP_ISSUER,
+    ROLE_REWARD_MANAGER
+}
+
+type Group {
+    id: ID!
+    name: String!
+    scheduledStartAt: LocalTime!
+    slackChannelUrl: Url!
+    stampsToReward: Int!
+    #    stamps: [Stamp!]!　FIXME: スタンプ選択機能を実装する場合コメントアウト外す
+    #    stampIssuerUserId: ID!
+}
+
+type GroupDetail {
+    groupId: ID!
+    stampIssuerUserId: ID! # 権限制御用
+    memberships: [Membership!]!
+    currentMembership: Membership # セッションからログインユーザーのID取得して絞り込む
+}
+
+type Stamp {
+    id: ID!
+    code: String!
+    imagePath: String!
+}
+
+type Card {
+    id: ID!
+    generation: Int
+    currentStamps: Int
+    stampHistories: [StampHistory!]!
+}
+
+type StampHistory {
+    stampImagePath: String!
+    createdAt: DateTime!
+}
+
+type UserUpdatePayload {
+    user: User
+}
+
+input GroupInput {
+    name: String!
+    scheduledStartAt: LocalTime!
+    slackChannelUrl: Url!
+    stampIds: [ID!]!
+    stampsToReward: Int!
+}
+
+type GroupCreatePayload {
+    group: Group
+}
+
+type GroupUpdatePayload {
+    group: Group
+}
+
+type GroupAddMemberPayload {
+    group: Group
+}
+
+type GroupChangeMemberRolePayload {
+    group: Group
+}
+
+type GroupStampPayload {
+    group: Group
+}
+
+# FIXME: ランキング機能を実装するタイミングでコメントアウト外す
+#enum RankingType {
+#    CONSECUTIVE_ATTENDANCE
+#    TOTAL_ATTENDANCE
+#}
+#
+#type RankingItem {
+#    id: ID!
+#    rankingType: RankingType!
+#    user: User!
+#    rank: Int!
+#    count: Int!
+#}
+#
+#type RankingItemConnection {
+#    edges: [RankingItemEdge!]!
+#    pageInfo: PageInfo!
+#}
+#
+#type RankingItemEdge {
+#    cursor: String!
+#    node: RankingItem!
+#}
+#
+#type PageInfo {
+#    hasNextPage: Boolean!
+#    hasPreviousPage: Boolean!
+#}
+
+scalar DateTime
+scalar LocalTime
+scalar Url
+directive @skipcodegen on FIELD_DEFINITION
