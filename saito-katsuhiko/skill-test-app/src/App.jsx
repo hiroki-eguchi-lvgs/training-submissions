@@ -677,7 +677,7 @@ function QuestionCard({ q, idx, showAnswer, onToggle }) {
               {q.type === "選択" && (
                 <div style={{ fontWeight: 500, marginBottom: 4, color: "#0F6E56" }}>正解：{q.answer}</div>
               )}
-              <div>{q.answer || q.point}</div>
+              {q.type !== "選択" && <div>{q.answer}</div>}
               {q.type === "選択" && q.point && (
                 <div style={{ marginTop: 6, color: "var(--color-text-secondary,#666)" }}>{q.point}</div>
               )}
