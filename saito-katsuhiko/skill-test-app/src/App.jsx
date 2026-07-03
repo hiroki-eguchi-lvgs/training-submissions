@@ -620,9 +620,12 @@ function ConceptRow({ c }) {
     </div>
   );
 }
+const CONCEPT_BY_ID = Object.fromEntries(
+  COURSES.flatMap(course => course.concepts).map(concept => [concept.id, concept])
+);
 
 function QuestionCard({ q, idx, showAnswer, onToggle }) {
-  const concept = COURSES.flatMap(c => c.concepts).find(c => c.id === q.conceptId);
+  const concept = CONCEPT_BY_ID[q.conceptId];
   return (
     <div style={{
       background: "var(--color-background-primary,#fff)",
