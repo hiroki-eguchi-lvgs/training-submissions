@@ -58,7 +58,15 @@ export default async function storeRoutes(fastify: FastifyInstance) {
         const result = await addStore(request.body);
         return reply.code(201).send(result);
       } catch (err) {
-        return reply.code(400).send({ message: (err as Error).message });
+        fastify.log.error(err);
+        if (
+          err instanceof Error &&
+          (err.message === "住所から座標が見つかりませんでした" ||
+            err.message === "ジオコーディングに失敗しました")
+        ) {
+          return reply.code(400).send({ message: err.message });
+        }
+        return reply.code(500).send({ message: "登録に失敗しました" });
       }
     },
   );
@@ -118,7 +126,15 @@ export default async function storeRoutes(fastify: FastifyInstance) {
         }
         return reply.code(200).send({ message: "更新しました" });
       } catch (err) {
-        return reply.code(400).send({ message: (err as Error).message });
+        fastify.log.error(err);
+        if (
+          err instanceof Error &&
+          (err.message === "住所から座標が見つかりませんでした" ||
+            err.message === "ジオコーディングに失敗しました")
+        ) {
+          return reply.code(400).send({ message: err.message });
+        }
+        return reply.code(500).send({ message: "更新に失敗しました" });
       }
     },
   );

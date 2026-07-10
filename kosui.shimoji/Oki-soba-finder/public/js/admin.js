@@ -1,3 +1,5 @@
+import { setupLogout } from "./common.js";
+
 setupLogout();
 
 const errorMessage = document.getElementById("error-message");

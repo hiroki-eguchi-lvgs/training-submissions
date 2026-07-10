@@ -1,3 +1,7 @@
+import { setupLogout } from "./common.js";
+
+setupLogout();
+
 // ===== 地図の初期化 =====
 const map = L.map("map").setView([35.6595, 139.7005], 14); // 渋谷駅あたり
 L.tileLayer("https://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.png", {
@@ -97,9 +101,6 @@ document.querySelectorAll(".filters button").forEach((button) => {
     render();
   });
 });
-
-// ===== ログアウト =====
-setupLogout();
 
 // ===== 起動（ガード → 取得 → 描画）=====
 async function init() {

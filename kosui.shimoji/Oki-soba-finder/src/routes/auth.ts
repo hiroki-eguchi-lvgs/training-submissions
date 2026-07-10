@@ -36,7 +36,14 @@ export default async function authRoutes(fastify: FastifyInstance) {
         await register(login_id, password, user_name);
         return reply.code(201).send({ message: "登録しました" });
       } catch (err) {
-        return reply.code(409).send({ message: (err as Error).message });
+        fastify.log.error(err);
+        if (
+          err instanceof Error &&
+          err.message === "このログインIDは既に使われています"
+        ) {
+          return reply.code(409).send({ message: err.message });
+        }
+        return reply.code(500).send({ message: "登録に失敗しました" });
       }
     },
   );
@@ -62,7 +69,14 @@ export default async function authRoutes(fastify: FastifyInstance) {
         request.session.user = { id: user.id, role: user.role };
         return reply.code(200).send({ message: "ログインしました" });
       } catch (err) {
-        return reply.code(401).send({ message: (err as Error).message });
+        fastify.log.error(err);
+        if (
+          err instanceof Error &&
+          err.message === "ログインIDまたはパスワードが違います"
+        ) {
+          return reply.code(401).send({ message: err.message });
+        }
+        return reply.code(500).send({ message: "ログインに失敗しました" });
       }
     },
   );

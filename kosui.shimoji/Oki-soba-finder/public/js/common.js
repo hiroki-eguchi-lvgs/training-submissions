@@ -1,7 +1,7 @@
 // ===== 全ページ共通のユーティリティ =====
 
 // ログアウトリンクに「クリック→/logout→login.htmlへ」を仕込む
-function setupLogout() {
+export function setupLogout() {
   const link = document.getElementById("logout-link");
   if (!link) return; // ログアウトリンクが無いページでは何もしない
   link.addEventListener("click", async (event) => {

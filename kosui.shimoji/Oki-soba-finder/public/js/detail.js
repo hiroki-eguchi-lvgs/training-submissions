@@ -1,11 +1,12 @@
+import { setupLogout } from "./common.js";
+
+setupLogout();
+
 // ===== URLから店舗IDを取り出す =====
 const params = new URLSearchParams(location.search); // "?id=4" を解析
 const storeId = params.get("id"); // "4"（文字列）
 
 const errorMessage = document.getElementById("error-message");
-
-// ===== ログアウト（main.jsと同じ）=====
-setupLogout();
 
 // ===== 描画：店舗の基本情報 =====
 function renderInfo(store) {
