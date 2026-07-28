@@ -1,0 +1,55 @@
+.auth-section {
+  max-width: 500px;
+  margin: 80px auto;
+  padding: 0 20px;
+}
+
+.auth-section h1 {
+  font-size: 28px;
+  font-weight: 600;
+  color: #121212;
+  margin-bottom: 32px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 14px;
+  color: #757575;
+  margin-bottom: 8px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #DEDEDE;
+  border-radius: 4px;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+.auth-submit-btn {
+  width: 100%;
+  padding: 14px;
+  background-color: #FF553C;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.auth-section p {
+  margin-bottom: 12px;
+}
+
+.auth-section a.auth-submit-btn {
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+  margin-top: 12px;
+}
