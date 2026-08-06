@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function ArticleForm({
   formAction,
@@ -25,6 +25,17 @@ export default function ArticleForm({
   const [title, setTitle] = useState(initialTitle ?? '');
   const [tag, setTag] = useState(initialTag ?? '');
   const [content, setContent] = useState(initialContent ?? '');
+  const draftKey = articleId ? `draft-article-${articleId}` : 'draft-new';
+
+useEffect(() => {
+  const timer = setTimeout(() => {
+    localStorage.setItem(draftKey, JSON.stringify({ title, tag, content }));
+  }, 2000);
+
+  return () => {
+    clearTimeout(timer);
+  };
+}, [title, tag, content, draftKey]);
   
   return (
     <form action={formAction} encType="multipart/form-data">
