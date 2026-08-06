@@ -37,6 +37,17 @@ useEffect(() => {
   };
 }, [title, tag, content, draftKey]);
   
+
+useEffect(() => {
+  const saved = localStorage.getItem(draftKey);
+  if (saved) {
+    const draft = JSON.parse(saved);
+    setTitle(draft.title);
+    setTag(draft.tag);
+    setContent(draft.content);
+  }
+}, []);
+
   return (
     <form action={formAction} encType="multipart/form-data">
       {userId && <input type="hidden" name="user_id" value={userId} />}
