@@ -1,3 +1,6 @@
+'use client';
+import { useState } from 'react';
+
 export default function ArticleForm({
   formAction,
   submitLabel,
@@ -19,6 +22,10 @@ export default function ArticleForm({
   initialContent?: string;
   imageRequired: boolean;
 }) {
+  const [title, setTitle] = useState(initialTitle ?? '');
+  const [tag, setTag] = useState(initialTag ?? '');
+  const [content, setContent] = useState(initialContent ?? '');
+  
   return (
     <form action={formAction} encType="multipart/form-data">
       {userId && <input type="hidden" name="user_id" value={userId} />}
@@ -27,17 +34,34 @@ export default function ArticleForm({
 
       <div className="form-group">
         <label>タイトル:</label>
-        <input type="text" name="article_title" defaultValue={initialTitle} required />
+        <input
+          type="text"
+          name="article_title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          required
+        />
       </div>
 
       <div className="form-group">
         <label>タグ:</label>
-        <input type="text" name="tag" defaultValue={initialTag} />
+        <input
+          type="text"
+          name="tag"
+          value={tag}
+          onChange={(e) => setTag(e.target.value)}
+        />
       </div>
 
       <div className="form-group">
         <label>本文:</label>
-        <textarea name="content" rows={8} defaultValue={initialContent} required></textarea>
+        <textarea
+          name="content"
+          rows={8}
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          required
+        ></textarea>
       </div>
 
       <div className="form-group">
