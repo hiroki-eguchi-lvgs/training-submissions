@@ -1,0 +1,33 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: oki-soba-db
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "3306:3306"
+  app:
+    build: .
+    container_name: oki-soba-app
+    restart: unless-stopped
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      SESSION_SECRET: ${SESSION_SECRET}
+      PORT: 3000
+    ports:
+      - "3000:3000"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./docker/mysql/init:/docker-entrypoint-initdb.d
+
+volumes:
+  db_data:
