@@ -2,7 +2,4 @@
 *.DS_Store
 node_modules/
 .DS_Store
-eguchi-hiroki/Blog_TS,Next/.next/
-eguchi-hiroki/Blog_TS,Next/.env
-eguchi-hiroki/Blog_TS,Next/public/img/uploads/*
-!eguchi-hiroki/Blog_TS,Next/public/img/uploads/.gitkeep
+.DS_Store
