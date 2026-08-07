@@ -1,5 +1,7 @@
 'use client';
-import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { articleSchema, ArticleFormValues } from '../schemas/article';
 import { useDraftAutosave } from './useDraftAutosave';
 
 export default function ArticleForm({
@@ -23,12 +25,18 @@ export default function ArticleForm({
   initialContent?: string;
   imageRequired: boolean;
 }) {
-  const [title, setTitle] = useState(initialTitle ?? '');
-  const [tag, setTag] = useState(initialTag ?? '');
-  const [content, setContent] = useState(initialContent ?? '');
-
-  useDraftAutosave(articleId, title, tag, content, setTitle, setTag, setContent);
-
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ArticleFormValues>({
+    resolver: zodResolver(articleSchema),
+    defaultValues: {
+      article_title: initialTitle ?? '',
+      tag: initialTag ?? '',
+      content: initialContent ?? '',
+    },
+  });
 
   return (
     <form action={formAction} encType="multipart/form-data">
@@ -38,34 +46,17 @@ export default function ArticleForm({
 
       <div className="form-group">
         <label>タイトル:</label>
-        <input
-          type="text"
-          name="article_title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          required
-        />
+        <input type="text" {...register('article_title')} />
       </div>
 
       <div className="form-group">
         <label>タグ:</label>
-        <input
-          type="text"
-          name="tag"
-          value={tag}
-          onChange={(e) => setTag(e.target.value)}
-        />
+        <input type="text" {...register('tag')} />
       </div>
 
       <div className="form-group">
         <label>本文:</label>
-        <textarea
-          name="content"
-          rows={8}
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          required
-        ></textarea>
+        <textarea rows={8} {...register('content')}></textarea>
       </div>
 
       <div className="form-group">
