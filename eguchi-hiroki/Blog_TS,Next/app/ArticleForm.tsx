@@ -1,5 +1,6 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { useDraftAutosave } from './useDraftAutosave';
 
 export default function ArticleForm({
   formAction,
@@ -25,28 +26,9 @@ export default function ArticleForm({
   const [title, setTitle] = useState(initialTitle ?? '');
   const [tag, setTag] = useState(initialTag ?? '');
   const [content, setContent] = useState(initialContent ?? '');
-  const draftKey = articleId ? `draft-article-${articleId}` : 'draft-new';
 
-useEffect(() => {
-  const timer = setTimeout(() => {
-    localStorage.setItem(draftKey, JSON.stringify({ title, tag, content }));
-  }, 2000);
+  useDraftAutosave(articleId, title, tag, content, setTitle, setTag, setContent);
 
-  return () => {
-    clearTimeout(timer);
-  };
-}, [title, tag, content, draftKey]);
-  
-
-useEffect(() => {
-  const saved = localStorage.getItem(draftKey);
-  if (saved) {
-    const draft = JSON.parse(saved);
-    setTitle(draft.title);
-    setTag(draft.tag);
-    setContent(draft.content);
-  }
-}, []);
 
   return (
     <form action={formAction} encType="multipart/form-data">
