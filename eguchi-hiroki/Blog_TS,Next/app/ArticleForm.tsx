@@ -31,6 +31,7 @@ export default function ArticleForm({
     formState: { errors },
   } = useForm<ArticleFormValues>({
     resolver: zodResolver(articleSchema),
+    mode: 'onBlur',
     defaultValues: {
       article_title: initialTitle ?? '',
       tag: initialTag ?? '',
@@ -47,21 +48,24 @@ export default function ArticleForm({
       <div className="form-group">
         <label>タイトル:</label>
         <input type="text" {...register('article_title')} />
+        {errors.article_title && <p className="error">{errors.article_title.message}</p>}
       </div>
 
       <div className="form-group">
         <label>タグ:</label>
         <input type="text" {...register('tag')} />
+        {errors.tag && <p className="error">{errors.tag.message}</p>}
       </div>
 
       <div className="form-group">
         <label>本文:</label>
         <textarea rows={8} {...register('content')}></textarea>
+        {errors.content && <p className="error">{errors.content.message}</p>}
       </div>
 
       <div className="form-group">
         <label>画像:</label>
-        <input type="file" name="eyecatch_image" accept="image/*" required={imageRequired} />
+        <input type="file" name="eyecatch_image" accept="image/*" />
       </div>
 
       <button type="submit" className="auth-submit-btn">{submitLabel}</button>
