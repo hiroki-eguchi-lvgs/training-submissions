@@ -95,15 +95,18 @@ export async function createArticle(formData: FormData) {
   const title = formData.get('article_title') as string;
   const tag = formData.get('tag') as string;
   const content = formData.get('content') as string;
-  const imageFile = formData.get('eyecatch_image') as File;
+  const imageFile = formData.get('eyecatch_image') as File | null;
 
-  const bytes = await imageFile.arrayBuffer();
-  const buffer = Buffer.from(bytes);
-  const fileName = `${Date.now()}-${imageFile.name}`;
-  const filePath = path.join(process.cwd(), 'public', 'img', 'uploads', fileName);
-  await writeFile(filePath, buffer);
+  let imagePath: string | null = null;
 
-  const imagePath = `img/uploads/${fileName}`;
+  if (imageFile && imageFile.size > 0) {
+    const bytes = await imageFile.arrayBuffer();
+    const buffer = Buffer.from(bytes);
+    const fileName = `${Date.now()}-${imageFile.name}`;
+    const filePath = path.join(process.cwd(), 'public', 'img', 'uploads', fileName);
+    await writeFile(filePath, buffer);
+    imagePath = `img/uploads/${fileName}`;
+  }
 
   await new Promise<void>((resolve, reject) => {
     db.query(

@@ -9,6 +9,7 @@ export const articleSchema = z.object({
   content: z
     .string()
     .min(50, '本文は50文字以上で入力してください'),
+    eyecatch_image: z.instanceof(FileList).optional(),
 });
 
 export type ArticleFormValues = z.infer<typeof articleSchema>;

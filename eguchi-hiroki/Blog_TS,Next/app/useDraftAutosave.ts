@@ -31,4 +31,10 @@ export function useDraftAutosave(
       setValue('content', draft.content);
     }
   }, []);
+
+  function clearDraft() {
+    localStorage.removeItem(draftKey);
+  }
+
+  return { clearDraft };
 }
