@@ -1,15 +1,16 @@
 import { useEffect } from 'react';
+import { UseFormWatch, UseFormSetValue } from 'react-hook-form';
+import { ArticleFormValues } from '../schemas/article';
 
 export function useDraftAutosave(
   articleId: number | undefined,
-  title: string,
-  tag: string,
-  content: string,
-  setTitle: (value: string) => void,
-  setTag: (value: string) => void,
-  setContent: (value: string) => void
+  watch: UseFormWatch<ArticleFormValues>,
+  setValue: UseFormSetValue<ArticleFormValues>
 ) {
   const draftKey = articleId ? `draft-article-${articleId}` : 'draft-new';
+  const title = watch('article_title');
+  const tag = watch('tag');
+  const content = watch('content');
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -25,9 +26,9 @@ export function useDraftAutosave(
     const saved = localStorage.getItem(draftKey);
     if (saved) {
       const draft = JSON.parse(saved);
-      setTitle(draft.title);
-      setTag(draft.tag);
-      setContent(draft.content);
+      setValue('article_title', draft.title);
+      setValue('tag', draft.tag);
+      setValue('content', draft.content);
     }
   }, []);
 }
