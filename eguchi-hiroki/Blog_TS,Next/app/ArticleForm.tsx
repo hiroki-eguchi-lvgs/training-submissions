@@ -40,15 +40,35 @@ export default function ArticleForm({
       content: initialContent ?? '',
     },
   });
-  
-  useDraftAutosave(articleId, watch, setValue);
+
+  const { clearDraft } = useDraftAutosave(articleId, watch, setValue);
+
+  function onSubmit(data: ArticleFormValues) {
+    const formData = new FormData();
+    formData.append('article_title', data.article_title);
+    formData.append('tag', data.tag ?? '');
+    formData.append('content', data.content);
+
+    if (userId) {
+      formData.append('user_id', userId);
+    }
+    if (articleId) {
+      formData.append('article_id', String(articleId));
+    }
+    if (currentImage) {
+      formData.append('current_image', currentImage);
+    }
+
+    if (data.eyecatch_image && data.eyecatch_image.length > 0) {
+      formData.append('eyecatch_image', data.eyecatch_image[0]);
+    }
+
+    clearDraft();
+    formAction(formData);
+  }
 
   return (
-    <form action={formAction} encType="multipart/form-data">
-      {userId && <input type="hidden" name="user_id" value={userId} />}
-      {articleId && <input type="hidden" name="article_id" value={articleId} />}
-      {currentImage && <input type="hidden" name="current_image" value={currentImage} />}
-
+    <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
       <div className="form-group">
         <label>タイトル:</label>
         <input type="text" {...register('article_title')} />
@@ -69,7 +89,7 @@ export default function ArticleForm({
 
       <div className="form-group">
         <label>画像:</label>
-        <input type="file" name="eyecatch_image" accept="image/*" />
+        <input type="file" {...register('eyecatch_image')} accept="image/*" />
       </div>
 
       <button type="submit" className="auth-submit-btn">{submitLabel}</button>
