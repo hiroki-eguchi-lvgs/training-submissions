@@ -28,6 +28,8 @@ export default function ArticleForm({
   const {
     register,
     handleSubmit,
+    watch,
+    setValue,
     formState: { errors },
   } = useForm<ArticleFormValues>({
     resolver: zodResolver(articleSchema),
@@ -38,6 +40,8 @@ export default function ArticleForm({
       content: initialContent ?? '',
     },
   });
+  
+  useDraftAutosave(articleId, watch, setValue);
 
   return (
     <form action={formAction} encType="multipart/form-data">
