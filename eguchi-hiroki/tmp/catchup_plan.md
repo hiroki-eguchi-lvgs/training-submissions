@@ -168,30 +168,85 @@ LTP リプレースチームに江口さんが配属されるにあたって、8
 
 ### Phase C. バックエンドの分離
 
+#### このPhaseで最終的に目指すディレクトリ構成
+
+Step6・Step7を終えると、`Blog_TS,Next` とは別のnpmプロジェクトとして、以下のようなNestJSバックエンド（`blog-backend` は仮の名称）が出来上がっている状態がゴール。`Blog_TS,Next` 側は「記事一覧の取得先をDB直アクセスからこのAPIへのfetch呼び出しに変える」以外の変更はない。
+
+```
+training-submissions/eguchi-hiroki/
+├── Blog_TS,Next/                         # 既存プロジェクト（変更は最小限）
+│   └── app/page.tsx                      # DB直アクセス → NestJS APIへのfetch呼び出しに変更
+│
+└── blog-backend/                         # ★ このPhaseで新規作成するNestJSプロジェクト
+    ├── prisma/
+    │   ├── schema.prisma                 # Step7.1: articles/usersテーブルの定義
+    │   ├── migrations/                   # Step7.4: prisma migrateで生成
+    │   └── seed.ts                       # Step7.5: シードデータ投入スクリプト
+    ├── src/
+    │   ├── main.ts                       # Step6.1: アプリのエントリーポイント
+    │   ├── app.module.ts                 # Step6.1: ルートモジュール
+    │   ├── prisma/
+    │   │   └── prisma.service.ts         # Step7.2: PrismaClientをDI用にラップ
+    │   └── articles/
+    │       ├── articles.module.ts        # Step6.4: モジュール定義
+    │       ├── articles.controller.ts    # Step6.4: ルーティング（GET /articles）
+    │       ├── articles.service.ts       # Step6.6: ビジネスロジック
+    │       ├── articles.repository.ts    # Step7.3: DBアクセスをここに閉じ込める
+    │       ├── dto/
+    │       │   └── article.dto.ts        # Step6.8: レスポンスの型（契約）
+    │       └── schemas/
+    │           └── articles-query.schema.ts  # Step7.6: リクエストのzodスキーマ
+    ├── .env / .env.example                # Step6.7: DB接続情報（Phase Bの延長）
+    └── package.json
+```
+
+- **Step6完了時点**では `articles.repository.ts` と `prisma/` はまだ存在せず、`articles.service.ts` の中に `mysql2` を使った生SQLでのDB取得処理が直接書かれている状態でよい（ゴールの中間地点）。
+- **Step7完了時点**で、DBアクセスを `articles.repository.ts` に切り出し、`prisma/schema.prisma` によるORM管理に置き換えることで、上記の最終形になる。
+- controller → service → repositoryという依存の向き（上位が下位を呼ぶ）と、各ファイルが1つの責務だけを持つように分かれている点に注目すること。
+
 #### 6. NestJSバックエンドの導入（記事一覧取得APIを切り出す）
 
 > **Note**: このステップでは、認証が不要で読み取り専用の「記事一覧取得」だけをNestJSに切り出す。DBアクセスは現状の `db.ts` と同じ生SQLのままでよい（Prisma・zodバリデーション・レイヤー分離の導入はStep7で、このNestJSバックエンドに対して直接行う）。認証の強化は、後続のPhaseでまずNext.js側から学ぶ。ここで作るNestJSアプリにその改善を反映するかどうかは、後続のPhaseを終えてから改めて検討する。
 
 - **6.1. NestJS CLIをインストールし、新規プロジェクトを作成する**
   - `Blog_TS,Next` とは別のnpmプロジェクトとして作成する。同じマシン上で両方を同時に起動することになるので、ポート番号が衝突しないことを確認する。
+  - `npm i -g @nestjs/cli` でグローバルインストールする方法と、`npx @nestjs/cli new` でその都度実行する方法の違い（バージョンが固定されるか、常に最新を使うか）を比較してどちらを使うか決める。
+  - プロジェクトは `training-submissions/eguchi-hiroki/` 配下に、`Blog_TS,Next` と並ぶディレクトリ（例: `blog-backend`）として作成する。パッケージマネージャは `Blog_TS,Next` と揃えてnpmを選ぶ。
+  - NestJSのデフォルトポート（3000番）はNext.jsのデフォルトポートと同じため、どちらか一方のポートを変更しないと同時起動できない。`.env` でポート番号を切り出せるようにしておくと後で楽になる。
 - **6.2. 生成された雛形一式に目を通し、`main.ts` / `app.module.ts` / `app.controller.ts` / `app.service.ts` それぞれの役割を1行で説明できるようにする**
   - 実際に手を動かす前に、まず「地図」を持つ。どのファイルがアプリの起動処理を担い、どのファイルがルーティングを担い、どのファイルがロジックを担うのか整理する。
+  - `main.ts`: `NestFactory.create()` でアプリを起動するエントリーポイント。ポート番号の指定や、後続ステップで使うグローバルなPipe/Interceptorの登録もここで行うことになる。
+  - `app.module.ts`: `@Module({ imports, controllers, providers })` でアプリの構成要素を宣言する、ルートとなるモジュール。今後 `articles` 用のモジュールもここに登録されていく。
+  - `app.controller.ts` / `app.service.ts`: それぞれ `@Controller()` / `@Injectable()` デコレータの役割と、controllerがロジックを持たずserviceに委譲する設計思想を確認する。
+  - `app.controller.spec.ts` のような生成済みテストファイルも軽く見ておく（Step9で本格的に書き方を学ぶ前の予習になる）。
 - **6.3. 雛形のまま `npm run start:dev` 相当のコマンドで起動し、デフォルトで用意されているエンドポイントにアクセスして動作を確認する**
   - ブラウザやcurlなど、普段使い慣れた方法でアクセスしてみる。
+  - `package.json` の `start:dev` が内部で使っている `--watch` オプションの役割（ファイル変更を検知して自動でアプリを再起動する）を確認する。
+  - 試しにレスポンス文字列を書き換えて保存し、watchが効いて自動的に反映されることを確認しておくと、以降の開発サイクルが速くなる。
 - **6.4. `articles` 機能用のmodule・controller・serviceをNestJS CLIの生成コマンドで作成する**
   - CLIが自動で `app.module.ts` にモジュールを登録してくれる部分と、自分で書く必要がある部分を区別して理解する。
+  - `nest g module articles` / `nest g controller articles` / `nest g service articles` を個別に叩く方法と、`nest g resource articles` でまとめて生成する方法の両方を調べ、後者を使う場合はCRUD一式のテンプレートが生成される点（今回は読み取り専用なので不要なメソッドをどう扱うか判断が必要）に注意する。
+  - 生成後、`app.module.ts` の `imports` に `ArticlesModule` が実際に追記されていることをdiffで確認する。
 - **6.5. まずはDBに繋がず、固定のダミーデータの配列を返すだけの `GET /articles` エンドポイントをcontrollerに実装し、疎通確認する**
   - 「ルーティングが正しく動いているか」を先に確認してから次のステップに進むことで、後でDB接続の問題が起きたときに切り分けやすくなる。
+  - ダミーデータは `Blog_TS,Next` の `types.ts` にある `Article` 型（`id`/`title`/`tags`/`body`など）と項目を揃えた配列にしておくと、後続ステップとの差分が見やすくなる。
+  - `@Controller('articles')` と `@Get()` の組み合わせでパスが `GET /articles` になる仕組みを確認し、レスポンスがJSON形式で200で返ってくることを見る。
 - **6.6. ダミーデータを返すロジックをcontrollerからserviceに移し、controllerは「serviceを呼んで結果を返すだけ」にする**
   - serviceがcontrollerにどう渡されるか（コンストラクタインジェクション）を、`app.module.ts` の `providers` の記述と合わせて確認する。これがNestJSのDI（依存性注入）の最初の実例になる。
+  - serviceに `findAll()` のようなメソッドを定義し、controllerの constructor で `private readonly articlesService: ArticlesService` として受け取る。
+  - あえて一時的に `providers` から `ArticlesService` を外してみて、どんな起動エラーが出るかを確認すると、DIコンテナが何をしているかが体感的に理解できる。
 - **6.7. serviceの中身を、ダミーデータではなく実際のDB（`blog_app`）から記事一覧を取得する実装に置き換える**
   - `Blog_TS,Next` の `db.ts` と同じように、`mysql2` を使って生SQLで取得するところから始める（Prismaはまだ使わない）。
-  - DB接続情報は決め打ちにせず、Phase Bで学んだ環境変数の管理方法をここでも適用する。
+  - コネクションプールの作成コードをどこに置くか（service内に直接書くか、専用のモジュールに切り出すか）を考える。Step7でPrismaに置き換えることを見越すと、後者の方が差し替えやすい。
+  - DB接続情報は決め打ちにせず、Phase Bで学んだ環境変数の管理方法をここでも適用する。`process.env` を直接読むか、`@nestjs/config` パッケージを導入するかを比較検討する（後者はNestJS公式の環境変数管理の仕組みで、後続のPhaseでも使う可能性がある）。
 - **6.8. レスポンスの型をDTO（クラス）として定義し、controllerの戻り値の型に指定する**
   - なぜ戻り値の型を `any` のままにせず、専用のクラスを定義するのか（呼び出し側との「契約」を明示する）を考える。
+  - `id`/`title`/`tags`/`body`/`createdAt` などのフィールドを持つ `ArticleDto` クラスを定義し、controllerのメソッドの戻り値型を `Promise<ArticleDto[]>` のように明示する。
+  - TypeScriptの型チェックで「serviceの戻り値の形」と「DTOの形」が合っているかを確認する。今回は型定義に主眼を置き、`class-transformer` によるシリアライズ制御までは踏み込まなくてよい。
 - **6.9. Next.js側で記事一覧を取得している箇所（`app/page.tsx` など）を、直接DBを見にいく処理から、このNestJS APIへの `fetch` 呼び出しに置き換え、画面が同じように表示されることを確認する**
   - ブラウザ（クライアントコンポーネント）から直接呼び出す場合はCORSの設定が必要になることがある。Next.jsのServer Component/Server Actionからサーバー側で呼び出す場合は事情が異なる点も含めて調べる。
-  - NestJS APIのURLは、Next.js側の環境変数として管理する（Phase Bの環境変数管理の延長）。
+  - NestJS APIのURLは、Next.js側の環境変数として管理する（Phase Bの環境変数管理の延長）。名前は `NEST_API_URL` など分かりやすいものにする。
+  - NestJSアプリが起動していない場合や、レスポンスが200以外の場合に画面がどう振る舞うか（エラー表示、フォールバックなど）も簡単に考えておく。
 
 - **学べること**: NestJS CLIの使い方、Module/Controller/Serviceそれぞれの役割分担、DI（依存性注入）の最初の実例、DTOによる「入力/出力の型を契約として明示する」考え方。
 - **参考リンク**:
@@ -204,29 +259,38 @@ LTP リプレースチームに江口さんが配属されるにあたって、8
 > **Note**: このステップはStep6で作成したNestJSバックエンドプロジェクトに対して作業する。`Blog_TS,Next` 側の `db.ts` / `actions.ts` には手を入れない。ORM導入・バリデーション・レイヤー分離という3つのテーマを、フロントエンド（Next.js Server Action）ではなくこのバックエンド（NestJS）の改善を通してまとめて学ぶ。
 
 - **7.1. NestJSバックエンドプロジェクトにPrismaを導入し、`schema.prisma` に `articles` / `users` テーブルを定義する**
-  - `prisma` と `@prisma/client` をインストールし、初期化コマンドで雛形を作る。
+  - `prisma` と `@prisma/client` をインストールし、`npx prisma init` で生成される `schema.prisma` と `.env`（`DATABASE_URL`）の役割を確認する。
   - `datasource` には、Step4で学んだ環境変数管理の考え方を踏襲し、バックエンドプロジェクト用の `.env` からDB接続先を指定する。
-  - フィールドは、`Blog_TS,Next` の `types.ts` の `Article` / `User` と、`docker/init/01_schema.sql`（あれば）を突き合わせて洗い出す。カラム名の命名規則（snake_case/camelCase）をPrisma側でどう扱うか（`@map`/`@@map`が必要か）も調べる。
+  - フィールドは、`Blog_TS,Next` の `types.ts` の `Article` / `User` と、`docker/initdb` 配下の初期化SQLのカラムを1つずつ突き合わせ、抜け漏れがないか洗い出す。
+  - MySQL側がsnake_caseのカラム名、Prisma側をcamelCaseのフィールド名にしたい場合、フィールド単位の `@map("column_name")` とテーブル単位の `@@map("table_name")` が必要になることを確認する。
 - **7.2. Prisma Clientをprovider（例: `PrismaService`）としてラップし、NestJSのDIで各serviceに注入できるようにする**
   - `PrismaClient` を継承した `PrismaService` を作り、`onModuleInit`/`onModuleDestroy` でDB接続のライフサイクルを管理する仕組みを、NestJS公式の「Prisma」レシピで確認する。
   - 作成した `PrismaService` を、Step6.6でDI（依存性注入）を学んだ流れと同様に、対象moduleの `providers` に登録し、コンストラクタインジェクションでserviceに渡す。
+  - `PrismaService` を専用の `PrismaModule` に切り出し、`@Global()` デコレータを付けて他のmoduleから都度 `imports` せずに使えるようにするか、それぞれのmoduleで個別に `imports` するか、NestJS公式レシピの推奨（`@Global()`）を踏まえて方針を決める。
 - **7.3. DBアクセスだけを担う `ArticlesRepository` を新設し、Step6.7で実装した `mysql2` の生SQL呼び出しを `PrismaService` 経由のPrisma Client呼び出しに置き換えてこのrepositoryに閉じ込める**
   - repositoryの関数は「Prismaを呼んでデータを返すだけ」にし、バリデーションなど業務ロジックの知識を持たせない。
+  - `ArticlesRepository` に `findAll()` を定義し、内部で `this.prisma.article.findMany()` を呼ぶだけの実装にする。Step6.7で書いた生SQLと並べて、コード量・型安全性がどう変わるかを比較する。
   - 既存の `ArticlesService` は `ArticlesRepository` をDIで受け取り、「repositoryを呼んで結果を返すだけ」の薄い層になるよう書き換える。controller側の呼び出し方は変えず、内部実装だけが生SQLからPrisma + repositoryに変わったことを確認する。
-  - 置き換え後も `GET /articles` のレスポンス形式（Step6.8のDTO）が変わらないことを、Next.js側（Step6.9で接続済み）から確認する。
-- **7.4. 手書きの初期化SQL（`docker/init/01_schema.sql`）を `prisma migrate` によるマイグレーション管理に移行する**
-  - `schema.prisma` から `prisma migrate dev` でマイグレーションSQLを生成させ、元の手書きSQLと見比べて差分がないか確認する。
-  - 移行後、Docker起動時の初期化（Step3.3）とPrisma Migrateでテーブル管理が二重にならないよう、どちらに寄せるかを決める。
-- **7.5. `docker/init/02_seed.sql` を `prisma db seed` に置き換える**
-  - `package.json` の `prisma.seed` 設定と専用のシードスクリプトファイルの仕組みを調べ、同等のデータをPrisma Client経由で作成するスクリプトに書き換える。
+  - 置き換え後も `GET /articles` のレスポンス形式（Step6.8のDTO）が変わらないことを、Next.js側（Step6.9で接続済み）から確認する。切り替えが終わったら、不要になった `mysql2` 関連のコード（コネクションプール作成など）を削除する。
+- **7.4. 手書きの初期化SQL（`docker/initdb` 配下）を `prisma migrate` によるマイグレーション管理に移行する**
+  - `schema.prisma` から `npx prisma migrate dev --name init` でマイグレーションSQLを生成させ、`prisma/migrations/` 配下に出力されたSQLと元の手書きSQLを1行ずつ見比べて差分がないか確認する。
+  - Docker起動時の初期化（Step3.3）と `prisma migrate` が両方テーブル作成を試みると衝突するため、Docker側の初期化スクリプトを空にする（または削除する）などして、どちらでテーブルを管理するかを1つに決める。
+  - 以降スキーマを変更する際は「`schema.prisma` を書き換えてから `prisma migrate dev` で差分を生成する」という開発フローに切り替わることを確認する。
+- **7.5. `docker/initdb` 配下のシード用SQLを `prisma db seed` に置き換える**
+  - `package.json` の `"prisma": { "seed": "..." }` の設定と、専用のシードスクリプトファイル（例: `prisma/seed.ts`）の仕組みを調べ、`npx prisma db seed` で実行されることを確認する。
+  - Step3.4で用意した内容（ハッシュ化済みパスワードを含む）と同等のデータを、`prisma.user.create()` のようなPrisma Client呼び出しで作成するスクリプトに書き換える。
+  - 既にデータが入っている状態で再実行した場合の挙動（重複作成されないか）を確認し、`upsert` を使うか実行前に `deleteMany()` するかなど、再実行時の方針を決めておく。
 - **7.6. `GET /articles` にタグによる絞り込み（`tag`）とページネーション（`limit`/`offset`）のクエリパラメータを追加し、`zod` でその入力ルール（型・範囲・デフォルト値）をスキーマとして定義する**
   - `limit` に負の数や極端に大きい値が来た場合など、どんな入力が不正かを洗い出してからスキーマを書く。
-  - スキーマから `z.infer` で型を取り出し、controllerの引数の型として使う。
+  - クエリパラメータはHTTP上では文字列として渡ってくるため、`z.coerce.number()` などで数値に変換しながら検証する方法を確認する。
+  - スキーマから `z.infer` で型を取り出し、controllerの引数の型として使う。`Blog_TS,Next` の `schemas/article.ts` と考え方は同じだが、対象がクライアント入力ではなくHTTPリクエストのクエリパラメータになる点の違いを意識する。
 - **7.7. controllerで受け取ったクエリパラメータを7.6のzodスキーマで検証し、不正な値はrepository/serviceに到達する前に弾く**
-  - NestJSでリクエストの検証・変換を行う仕組み（Pipe）のドキュメントを読み、zodスキーマをPipeとして組み込む方法（カスタムPipe、または `nestjs-zod` などのライブラリ）を調べる。
-  - 検証に失敗した場合、NestJSがデフォルトでどんなレスポンス（ステータスコード・エラー形式）を返すかを確認する。
+  - NestJSでリクエストの検証・変換を行う仕組み（Pipe）のドキュメントを読み、zodスキーマをPipeとして組み込む方法（`PipeTransform` を実装した自作Pipe、または `nestjs-zod` などのライブラリ）を比較し、どちらが学習の狙いに合うか判断してから実装する。
+  - controllerのメソッド引数に `@Query()` と作成したPipeを組み合わせ、検証済みの型安全なオブジェクトとして受け取れることを確認する。
+  - 検証に失敗した場合、NestJSがデフォルトでどんなレスポンス（ステータスコード・エラー形式）を返すかを確認する。必要であれば、エラーメッセージの形式を調整する。
 - **7.8. `ArticlesService` / `ArticlesRepository` の引数・戻り値の型を、7.6で定義したzodスキーマ由来の型（`z.infer`）で揃え、controller → service → repositoryの各層で型がどう受け渡されるかを整理する**
   - DTO（レスポンスの型を契約として明示するもの、Step6.8）と、zodスキーマ（リクエストの入力を検証するもの）の役割の違いを言葉で説明できるようにする。
+  - `ArticlesService.findAll(query: ArticlesQuery)` → `ArticlesRepository.findAll(query: ArticlesQuery)` のように、同じ型をcontroller・service・repositoryの各層で使い回すことで、層を経由するたびに型が変換・崩れることなく受け渡されることを確認する。
 
 - **学べること**: ORMが生成する型とクエリの仕組み、マイグレーションという概念（スキーマ変更を差分として管理する）、NestJSにおけるPrismaのDI（Provider化）パターン、controller/service/repositoryによる関心の分離と依存の向き、スキーマベースバリデーション（zod）をバックエンドのリクエスト検証に使う考え方。
 - **参考リンク**:
