@@ -25,10 +25,14 @@ export function useDraftAutosave(
   useEffect(() => {
     const saved = localStorage.getItem(draftKey);
     if (saved) {
-      const draft = JSON.parse(saved);
-      setValue('article_title', draft.title);
-      setValue('tag', draft.tag);
-      setValue('content', draft.content);
+      try {
+        const draft = JSON.parse(saved);
+        setValue('article_title', draft.title);
+        setValue('tag', draft.tag);
+        setValue('content', draft.content);
+      } catch (error) {
+        console.error('下書きからの復元に失敗しました', error);
+      }
     }
   }, []);
 
