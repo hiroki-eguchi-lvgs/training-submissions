@@ -1,0 +1,1 @@
+cd eguchi-hiroki/Blog_TS,Next && npx lint-staged
