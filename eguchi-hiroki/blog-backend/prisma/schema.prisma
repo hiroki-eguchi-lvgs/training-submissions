@@ -1,0 +1,29 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  user_id    String   @id @db.VarChar(20)
+  password   String   @db.VarChar(255)
+  email      String?  @db.VarChar(255)
+  sns_link   String?  @db.VarChar(255)
+  updated_at DateTime?
+  articles   Article[]
+}
+
+model Article {
+  article_id     Int      @id @default(autoincrement())
+  article_title  String?  @db.VarChar(255)
+  content        String?  @db.Text
+  tag            String?  @db.VarChar(255)
+  user_id        String?  @db.VarChar(20)
+  updated_at     DateTime?
+  eyecatch_image String?  @db.VarChar(255)
+  user           User?    @relation(fields: [user_id], references: [user_id])
+}
