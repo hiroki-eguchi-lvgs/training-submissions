@@ -11,6 +11,7 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
       user: 'root',
       password: 'root',
       database: 'blog_app',
+      allowPublicKeyRetrieval: true,
     });
     super({ adapter });
   }
