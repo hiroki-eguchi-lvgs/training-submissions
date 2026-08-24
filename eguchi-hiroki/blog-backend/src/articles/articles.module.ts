@@ -1,11 +1,10 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
 import { ArticlesController } from './articles.controller';
 import { ArticlesService } from './articles.service';
+import { ArticlesRepository } from './articles.repository';
 
 @Module({
-  imports: [ConfigModule],
   controllers: [ArticlesController],
-  providers: [ArticlesService]
+  providers: [ArticlesService, ArticlesRepository]
 })
 export class ArticlesModule {}
