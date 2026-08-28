@@ -1,6 +1,8 @@
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import db from '../../../db';
+import { QueryError, RowDataPacket } from 'mysql2';
+import { User } from '../../../types';
 import { updateProfile } from '../../actions';
 import '../../../public/register.css';
 
@@ -12,14 +14,18 @@ export default async function EditUserPage() {
     redirect('/login');
   }
 
-  const users = await new Promise<any[]>((resolve, reject) => {
-    db.query('SELECT * FROM users WHERE user_id = ?', [userId], (err: any, results: any) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(results);
-      }
-    });
+  const users = await new Promise<User[]>((resolve, reject) => {
+    db.query<(User & RowDataPacket)[]>(
+      'SELECT * FROM users WHERE user_id = ?',
+      [userId],
+      (err: QueryError | null, results: User[]) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(results);
+        }
+      },
+    );
   });
 
   const user = users[0];
@@ -36,9 +42,15 @@ export default async function EditUserPage() {
         </div>
         <div className="form-group">
           <label>SNSリンク:</label>
-          <input type="text" name="sns_link" defaultValue={user.sns_link ?? ''} />
+          <input
+            type="text"
+            name="sns_link"
+            defaultValue={user.sns_link ?? ''}
+          />
         </div>
-        <button type="submit" className="auth-submit-btn">更新する</button>
+        <button type="submit" className="auth-submit-btn">
+          更新する
+        </button>
       </form>
     </div>
   );
