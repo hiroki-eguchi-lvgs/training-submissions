@@ -1,9 +1,12 @@
 'use server';
 
 import db from '../db';
+import { QueryError, RowDataPacket } from 'mysql2';
+import { User } from '../types';
 import bcrypt from 'bcrypt';
 import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
+import { createToken } from '../lib/jwt';
 import { writeFile } from 'fs/promises';
 import path from 'path';
 
@@ -17,13 +20,13 @@ export async function registerUser(formData: FormData) {
     db.query(
       'INSERT INTO users (user_id, password, updated_at) VALUES (?, ?, NOW())',
       [userId, hashedPassword],
-      (err: any) => {
+      (err: QueryError | null) => {
         if (err) {
           reject(err);
         } else {
           resolve();
         }
-      }
+      },
     );
   });
 
@@ -34,14 +37,18 @@ export async function loginUser(formData: FormData) {
   const userId = formData.get('user_id') as string;
   const password = formData.get('password') as string;
 
-  const users = await new Promise<any[]>((resolve, reject) => {
-    db.query('SELECT * FROM users WHERE user_id = ?', [userId], (err: any, results: any) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(results);
-      }
-    });
+  const users = await new Promise<User[]>((resolve, reject) => {
+    db.query<(User & RowDataPacket)[]>(
+      'SELECT * FROM users WHERE user_id = ?',
+      [userId],
+      (err: QueryError | null, results: User[]) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(results);
+        }
+      },
+    );
   });
 
   if (users.length === 0) {
@@ -54,9 +61,10 @@ export async function loginUser(formData: FormData) {
   if (!isMatch) {
     redirect('/login?error=wrongpassword');
   }
- 
-  const cookieStore = await cookies();  
-  cookieStore.set('userId', userId);
+
+  const cookieStore = await cookies();
+  const token = await createToken(userId);
+  cookieStore.set('token', token);
 
   redirect('/');
 }
@@ -67,7 +75,6 @@ export async function logoutUser() {
   redirect('/');
 }
 
-
 export async function updateProfile(formData: FormData) {
   const userId = formData.get('user_id') as string;
   const email = formData.get('email') as string;
@@ -77,13 +84,13 @@ export async function updateProfile(formData: FormData) {
     db.query(
       'UPDATE users SET email = ?, sns_link = ? WHERE user_id = ?',
       [email, snsLink, userId],
-      (err: any) => {
+      (err: QueryError | null) => {
         if (err) {
           reject(err);
         } else {
           resolve();
         }
-      }
+      },
     );
   });
 
@@ -103,7 +110,13 @@ export async function createArticle(formData: FormData) {
     const bytes = await imageFile.arrayBuffer();
     const buffer = Buffer.from(bytes);
     const fileName = `${Date.now()}-${imageFile.name}`;
-    const filePath = path.join(process.cwd(), 'public', 'img', 'uploads', fileName);
+    const filePath = path.join(
+      process.cwd(),
+      'public',
+      'img',
+      'uploads',
+      fileName,
+    );
     await writeFile(filePath, buffer);
     imagePath = `img/uploads/${fileName}`;
   }
@@ -112,13 +125,13 @@ export async function createArticle(formData: FormData) {
     db.query(
       'INSERT INTO articles (article_title, content, tag, user_id, updated_at, eyecatch_image) VALUES (?, ?, ?, ?, NOW(), ?)',
       [title, content, tag, userId, imagePath],
-      (err: any) => {
+      (err: QueryError | null) => {
         if (err) {
           reject(err);
         } else {
           resolve();
         }
-      }
+      },
     );
   });
 
@@ -139,7 +152,13 @@ export async function updateArticle(formData: FormData) {
     const bytes = await imageFile.arrayBuffer();
     const buffer = Buffer.from(bytes);
     const fileName = `${Date.now()}-${imageFile.name}`;
-    const filePath = path.join(process.cwd(), 'public', 'img', 'uploads', fileName);
+    const filePath = path.join(
+      process.cwd(),
+      'public',
+      'img',
+      'uploads',
+      fileName,
+    );
     await writeFile(filePath, buffer);
     imagePath = `img/uploads/${fileName}`;
   }
@@ -148,13 +167,13 @@ export async function updateArticle(formData: FormData) {
     db.query(
       'UPDATE articles SET article_title = ?, tag = ?, content = ?, eyecatch_image = ?, updated_at = NOW() WHERE article_id = ?',
       [title, tag, content, imagePath, articleId],
-      (err: any) => {
+      (err: QueryError | null) => {
         if (err) {
           reject(err);
         } else {
           resolve();
         }
-      }
+      },
     );
   });
 
@@ -170,13 +189,13 @@ export async function deleteArticle(formData: FormData) {
     db.query(
       'DELETE FROM articles WHERE article_id = ? AND user_id = ?',
       [articleId, userId],
-      (err: any) => {
+      (err: QueryError | null) => {
         if (err) {
           reject(err);
         } else {
           resolve();
         }
-      }
+      },
     );
   });
 

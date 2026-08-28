@@ -1,4 +1,7 @@
 import { loginUser } from '../actions';
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
+import { verifyToken } from '../../lib/jwt';
 import '../../public/register.css';
 
 export default async function LoginPage({
@@ -7,6 +10,13 @@ export default async function LoginPage({
   searchParams: Promise<{ error?: string }>;
 }) {
   const { error } = await searchParams;
+
+  const cookieStore = await cookies();
+  const token = cookieStore.get('token')?.value;
+  const payload = token ? await verifyToken(token) : null;
+  if (payload) {
+    redirect('/');
+  }
 
   return (
     <div className="auth-section">
@@ -24,7 +34,9 @@ export default async function LoginPage({
           <label>パスワード:</label>
           <input type="password" name="password" required />
         </div>
-        <button type="submit" className="auth-submit-btn">ログイン</button>
+        <button type="submit" className="auth-submit-btn">
+          ログイン
+        </button>
       </form>
     </div>
   );
