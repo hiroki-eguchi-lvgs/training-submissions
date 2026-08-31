@@ -6,6 +6,7 @@ import { User } from '../types';
 import bcrypt from 'bcrypt';
 import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
+import { requireLogin } from '../lib/auth';
 import { createToken } from '../lib/jwt';
 import { writeFile } from 'fs/promises';
 import path from 'path';
@@ -71,12 +72,12 @@ export async function loginUser(formData: FormData) {
 
 export async function logoutUser() {
   const cookieStore = await cookies();
-  cookieStore.delete('userId');
+  cookieStore.delete('token');
   redirect('/');
 }
 
 export async function updateProfile(formData: FormData) {
-  const userId = formData.get('user_id') as string;
+  const userId = await requireLogin();
   const email = formData.get('email') as string;
   const snsLink = formData.get('sns_link') as string;
 
@@ -98,7 +99,7 @@ export async function updateProfile(formData: FormData) {
 }
 
 export async function createArticle(formData: FormData) {
-  const userId = formData.get('user_id') as string;
+  const userId = await requireLogin();
   const title = formData.get('article_title') as string;
   const tag = formData.get('tag') as string;
   const content = formData.get('content') as string;
@@ -139,6 +140,7 @@ export async function createArticle(formData: FormData) {
 }
 
 export async function updateArticle(formData: FormData) {
+  const userId = await requireLogin();
   const articleId = formData.get('article_id') as string;
   const title = formData.get('article_title') as string;
   const tag = formData.get('tag') as string;
@@ -165,8 +167,8 @@ export async function updateArticle(formData: FormData) {
 
   await new Promise<void>((resolve, reject) => {
     db.query(
-      'UPDATE articles SET article_title = ?, tag = ?, content = ?, eyecatch_image = ?, updated_at = NOW() WHERE article_id = ?',
-      [title, tag, content, imagePath, articleId],
+      'UPDATE articles SET article_title = ?, tag = ?, content = ?, eyecatch_image = ?, updated_at = NOW() WHERE article_id = ? AND user_id = ?',
+      [title, tag, content, imagePath, articleId, userId],
       (err: QueryError | null) => {
         if (err) {
           reject(err);
@@ -182,8 +184,7 @@ export async function updateArticle(formData: FormData) {
 
 export async function deleteArticle(formData: FormData) {
   const articleId = formData.get('article_id') as string;
-  const cookieStore = await cookies();
-  const userId = cookieStore.get('userId')?.value;
+  const userId = await requireLogin();
 
   await new Promise<void>((resolve, reject) => {
     db.query(

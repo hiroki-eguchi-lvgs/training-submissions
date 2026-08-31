@@ -1,19 +1,16 @@
-import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import db from '../../../db';
 import { QueryError, RowDataPacket } from 'mysql2';
 import { User } from '../../../types';
 import { updateProfile } from '../../actions';
+import { getCurrentUserId } from '../../../lib/auth';
 import '../../../public/register.css';
 
 export default async function EditUserPage() {
-  const cookieStore = await cookies();
-  const userId = cookieStore.get('userId')?.value;
-
+  const userId = await getCurrentUserId();
   if (!userId) {
     redirect('/login');
   }
-
   const users = await new Promise<User[]>((resolve, reject) => {
     db.query<(User & RowDataPacket)[]>(
       'SELECT * FROM users WHERE user_id = ?',
@@ -27,15 +24,11 @@ export default async function EditUserPage() {
       },
     );
   });
-
   const user = users[0];
-
   return (
     <div className="auth-section">
       <h1>プロフィール編集</h1>
-
       <form action={updateProfile}>
-        <input type="hidden" name="user_id" value={user.user_id} />
         <div className="form-group">
           <label>メールアドレス:</label>
           <input type="email" name="email" defaultValue={user.email ?? ''} />

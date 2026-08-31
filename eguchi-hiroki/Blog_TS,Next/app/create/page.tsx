@@ -1,12 +1,11 @@
-import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
+import { getCurrentUserId } from '../../lib/auth';
 import { createArticle } from '../actions';
 import ArticleForm from '../ArticleForm';
 import '../../public/register.css';
 
 export default async function CreatePage() {
-  const cookieStore = await cookies();
-  const userId = cookieStore.get('userId')?.value;
+  const userId = await getCurrentUserId();
   if (!userId) {
     redirect('/login');
   }
@@ -16,7 +15,6 @@ export default async function CreatePage() {
       <ArticleForm
         formAction={createArticle}
         submitLabel="投稿する"
-        userId={userId}
         imageRequired={true}
       />
     </div>
