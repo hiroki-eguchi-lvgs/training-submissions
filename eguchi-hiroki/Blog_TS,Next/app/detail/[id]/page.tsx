@@ -1,4 +1,4 @@
-import { cookies } from 'next/headers';
+import { getCurrentUserId } from '../../../lib/auth';
 import db from '../../../db';
 import { QueryError, RowDataPacket } from 'mysql2';
 import { deleteArticle } from '../../actions';
@@ -13,8 +13,7 @@ export default async function DetailPage({
 }) {
   const { id } = await params;
 
-  const cookieStore = await cookies();
-  const userId = cookieStore.get('userId')?.value;
+  const userId = await getCurrentUserId();
 
   const articles = await new Promise<Article[]>((resolve, reject) => {
     db.query<(Article & RowDataPacket)[]>(

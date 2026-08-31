@@ -1,4 +1,4 @@
-import { cookies } from 'next/headers';
+import { getCurrentUserId } from '../../../lib/auth';
 import { redirect } from 'next/navigation';
 import db from '../../../db';
 import { QueryError, RowDataPacket } from 'mysql2';
@@ -13,8 +13,7 @@ export default async function EditPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const cookieStore = await cookies();
-  const userId = cookieStore.get('userId')?.value;
+  const userId = await getCurrentUserId();
   if (!userId) {
     redirect('/login');
   }
